@@ -1,0 +1,67 @@
+.battleBook {
+  --subtext: #c7fff7;
+  --wow: #d2ffed;
+
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0.7rem;
+  gap: 0.35rem;
+  width: 100%;
+  height: 4rem;
+  overflow: hidden;
+  user-select: none;
+  border-radius: 0.35rem;
+  background-image: linear-gradient(to right, #698180, #405e55);
+}
+
+.battleBook.purchased {
+  --subtext: #ffbf76;
+  --wow: #ffff00;
+
+  background-image: linear-gradient(to right, #c77e27, #993e19);
+}
+
+.battlePassImage {
+  position: absolute;
+  max-width: 6rem;
+  height: calc(100% + 0.75rem);
+  margin-left: -1rem;
+  margin-bottom: -0.35rem;
+
+  /* background-color: red; */
+}
+
+.tierInformation {
+  margin-left: 5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+  /* margin-left: 5rem; */
+}
+
+.tierInformation small {
+  color: var(--subtext);
+  font-size: 1.25rem;
+  line-height: 1.25rem;
+  /* font-family: var(--font-header); */
+  font-weight: 800;
+}
+
+.tierInformation p {
+  font-size: 1.25rem;
+  line-height: 1.5rem;
+  /* font-family: var(--font-header); */
+  font-weight: 700;
+  color: var(--wow);
+}
+
+.tierInformation p strong {
+  font-size: 1.25rem;
+  line-height: 1.25rem;
+  /* font-family: var(--font-header); */
+  font-weight: 700;
+  color: #fff;
+}

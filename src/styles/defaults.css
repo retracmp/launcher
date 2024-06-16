@@ -1,0 +1,156 @@
+button.default {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  font-size: 1.15rem;
+  font-weight: 700;
+  font-family: var(--font-header);
+  color: #000;
+  cursor: pointer;
+  min-height: max-content;
+  outline: none;
+  border: none;
+  border-radius: 0.3rem;
+  background-color: #ffffff;
+  backdrop-filter: blur(0.5rem);
+  transition: background-color 80ms;
+}
+
+button.default.setting {
+  border-radius: 0;
+  background-color: #ffffff0c;
+  color: #ffffff;
+  /* font-size: 1rem; */
+  border: 1px solid #ffffff0c;
+  font-weight: 500;
+}
+
+button.default.setting:hover {
+  background-color: #ffffff2a;
+}
+
+button.default.red {
+  background-color: var(--red);
+  color: #fff;
+  font-weight: 600;
+  font-family: var(--font-body);
+  text-transform: uppercase;
+  font-weight: 700;
+  /* background-image: linear-gradient(90deg, #3ca8b6, #2d5de0); */
+  background-image: linear-gradient(90deg, #f15135, #df3a35);
+  min-height: 2.55rem;
+  text-indent: 0.5rem;
+  transition: filter 100ms, box-shadow 100ms;
+}
+
+button.default.red.blur {
+  background-color: #f13b359a;
+}
+
+button.default.green {
+  color: #fff;
+  font-weight: 600;
+  font-family: var(--font-body);
+  text-transform: uppercase;
+  font-weight: 700;
+  background-image: linear-gradient(90deg, var(--green), var(--green-dark));
+  min-height: 2.55rem;
+}
+
+button.default.green:hover {
+  background-color: var(--green-dark);
+  filter: hue-rotate(-20deg);
+}
+
+button.default.discord {
+  color: #ffffff;
+  font-weight: 600;
+  background-color: #5662f6;
+  /* font-family: var(--font-body); */
+}
+
+button.default:disabled {
+  background-color: #36485c;
+  color: #ffffffbb;
+  cursor: not-allowed;
+  text-indent: 0.5rem;
+}
+
+button.default.red:hover {
+  background-color: var(--red-dark);
+}
+
+button.default.red:disabled {
+  background-color: var(--red);
+}
+
+button.default.blur:hover {
+  background-color: #ffffff40;
+}
+
+button.default.blur:disabled {
+  background-color: #ffffff20;
+}
+
+button.default.red.blur:hover {
+  background-color: #f13b35cb;
+}
+
+button.default.red.blur:disabled {
+  background-color: #f13b359a;
+}
+
+button.default.green:disabled {
+  background-color: var(--green);
+}
+
+button.default.green.blur:hover {
+  background-color: #3a9c43cb;
+}
+
+button.default.green.blur:disabled {
+  background-color: #3a9c439a;
+}
+
+button.default.discord:hover {
+  background-color: #4c59f6;
+}
+
+button.default.discord:disabled {
+  background-color: #5662f6;
+}
+
+button.default .leftIcon {
+  position: absolute;
+  left: 0rem;
+  height: 100%;
+  aspect-ratio: 1/1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+button.default .leftIcon.hide svg {
+  fill: #ffffffcc;
+}
+
+button.default.custom {
+  background-color: #06d2ec;
+  background-image: linear-gradient(to right, #4557fa, #349bfc);
+  color: #fff;
+  font-weight: 700;
+  font-family: var(--font-body);
+  font-size: 1.15rem;
+  text-transform: uppercase;
+  border-radius: 0.3rem;
+  min-height: 2.75rem;
+  transition: background-color 80ms, filter 100ms;
+}
+
+button.default.custom:hover {
+  background-color: #06d2ec;
+  filter: hue-rotate(20deg);
+}
