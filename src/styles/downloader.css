@@ -1,0 +1,84 @@
+.downloadContainer {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 0.7rem;
+  padding-bottom: 0.7rem;
+  gap: 0.35rem;
+  width: 100%;
+  margin-top: 0.5rem;
+  border-radius: 0.35rem;
+  background-image: linear-gradient(to right, #4557fa, #349bfc);
+  animation: spin_gradient 5s forwards linear infinite;
+}
+
+.downloadContainer .header {
+  display: flex;
+  flex-direction: column;
+}
+
+.downloadContainer .header h3 {
+  font-size: 1.25rem;
+  font-family: var(--font-header);
+  font-weight: 600;
+  line-height: 1.5rem;
+}
+
+.downloadContainer .header small {
+  display: flex;
+  font-size: 0.85rem;
+  font-family: var(--font-header);
+  font-weight: 500;
+  line-height: 1rem;
+  opacity: 0.75;
+}
+
+.downloadContainer .header small.left {
+  margin-left: auto;
+}
+
+.downloadContainer .fileName {
+  background-color: rgba(0, 0, 0, 0.295);
+  padding: 0.15rem 0.44rem;
+  /* text-align: center; */
+  font-family: var(--font-header);
+  border-radius: 0.25rem;
+  font-size: 0.95rem;
+  opacity: 0.9;
+  /* if overflow, use ... */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.downloadProgress {
+  display: flex;
+  background-color: rgba(0, 0, 0, 0.295);
+  margin: 0 auto;
+  margin-top: 0.15rem;
+  height: 0.35rem;
+  overflow: hidden;
+  border-radius: 0.11rem;
+  width: 99.5%;
+}
+
+.downloadProgressFill {
+  /* width: 98%; */
+  background-color: #00ffbf;
+  opacity: 0.8;
+  border-radius: 0.11rem;
+  transition: width 0.5s;
+  background-image: linear-gradient(to right, #00ffbf, #00ff6a);
+}
+
+@keyframes spin_gradient {
+  0% {
+    filter: hue-rotate(0deg);
+  }
+  50% {
+    filter: hue-rotate(10deg);
+  }
+  100% {
+    filter: hue-rotate(0deg);
+  }
+}
