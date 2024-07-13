@@ -55,7 +55,7 @@ const ShopPreview = () => {
   const daily = shop?.Sections.find((s) => s.Name === "BRDailyStorefront");
   // const offers = weekly?.Offers || [];
   // const offers = (shop?.Sections || []).flatMap((s) => s.Offers);
-  const offers = [...(daily?.Offers || []), ...(weekly?.Offers || [])];
+  const offers = [...(weekly?.Offers || []), ...(daily?.Offers || [])];
 
   useEffect(() => {
     if (offers.length === 0) return;
