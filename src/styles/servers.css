@@ -1,0 +1,257 @@
+.serverContainer {
+  display: flex;
+  /* flex: 1; */
+  flex-direction: column;
+  gap: 0.5rem;
+  padding-top: 0.8rem;
+  overflow-y: auto;
+  /* min-height: max-content; */
+  user-select: none;
+}
+
+.serverContainer::-webkit-scrollbar {
+  display: none;
+}
+
+.serverContainer > section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  width: 100%;
+  /* min-height: 99rem; */
+  min-height: max-content;
+}
+
+.serverContainer > section > .server {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem 0.65rem;
+  width: 100%;
+  border-radius: 0.5rem;
+  background-color: #00000033;
+  min-height: max-content;
+}
+
+.serverContainer > section > .server > .row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.serverContainer > section > .server > .row > s {
+  margin-left: auto;
+}
+
+.serverContainer > section > .server > .row > h3 {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #ffffff;
+  text-shadow: 0 0 1rem #ffffff0e;
+  font-family: var(--font-body);
+}
+
+.serverContainer > section > .server > .row > h3 > p {
+  font-size: 1rem;
+  color: #ffffff65;
+}
+
+.serverContainer > section > .server > .row > h3 > b {
+  font-weight: 700;
+  color: #ffffffb2;
+}
+
+.serverContainer > section > .server > .row > h3 > b.open {
+  /* color: #00ff55bb; */
+  /* gradient text color */
+
+  background-image: linear-gradient(to right, #00ff6a, #d1ff06);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-weight: 800 !important;
+}
+
+.serverContainer > section > .server > .row > span.serverId {
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: #ffffff65;
+  text-shadow: 0 0 1rem #ffffff0e;
+  font-family: var(--font-body);
+}
+
+.tags {
+  position: absolute;
+  right: 0.5rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.serverContainer > section > .server > .row p.players {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  line-height: 0.75rem;
+  color: #ffffffea;
+  background-color: #0000003f;
+  backdrop-filter: blur(0.25rem);
+  border-radius: 0.35rem;
+}
+
+.serverContainer > section > .server > .row p.players > small {
+  font-size: 0.75rem;
+  color: #ffffff48;
+}
+
+.serverContainer > section > .server > .row p.donateonly {
+  display: flex;
+  gap: 0.25rem;
+  align-items: center;
+  font-size: 0.9rem;
+  font-weight: 500;
+  line-height: 0.75rem;
+  width: 1.4rem;
+  max-width: 1.4rem;
+  padding: 0.165rem;
+  height: 1.4rem;
+  color: #ffffffbb;
+  overflow: hidden;
+  background-image: linear-gradient(90deg, #ff44444b, #dd0bf069);
+  backdrop-filter: blur(0.25rem);
+  border-radius: 0.35rem;
+  transition: width 0.15s, max-width 0.15s;
+  cursor: help;
+}
+
+.serverContainer > section > .server > .row p.donateonly svg {
+  min-width: 1rem;
+  fill: #ffffffbb;
+  transition: fill 0.15s;
+}
+
+.serverContainer > section > .server > .row p.donateonly:hover {
+  width: 8rem;
+  max-width: 8rem;
+}
+
+.serverContainer > section > .server > .row p.donateonly:hover svg {
+  fill: #ffffff;
+}
+
+.serverContainer > section > .server > .row p.donateonly span.text {
+  white-space: nowrap;
+  width: 0;
+  overflow: hidden;
+  transition: width 0.15s;
+}
+
+.serverContainer > section > .server > .row p.donateonly:hover span.text {
+  width: 6rem;
+  color: #ffffff;
+  font-weight: 500;
+}
+
+.serverContainer > section > .server > .row .progress {
+  --p: 0.35rem;
+  width: 100%;
+  margin-top: var(--p);
+  margin-bottom: var(--p);
+  height: 0.3rem;
+  border-radius: 0.5rem;
+  background-color: #e6e6e61e;
+}
+
+.serverContainer > section > .server > .row .progress > div {
+  height: 100%;
+  border-radius: 0.5rem;
+  background-image: radial-gradient(circle at center, #1e6b54, #185a64);
+}
+
+.serverContainer > section > .server > .row .progress > div.closed {
+  background-image: linear-gradient(to right, #b346e7, #4e67f7);
+}
+
+@media screen and (min-width: 690px) {
+  .serverContainer > section > .server > .row p.donateonly {
+    width: 8rem;
+    max-width: 8rem;
+  }
+
+  .serverContainer > section > .server > .row p.donateonly svg {
+    fill: #ffffff;
+  }
+
+  .serverContainer > section > .server > .row p.donateonly span.text {
+    width: 6rem;
+    font-weight: 500;
+    color: #ffffff;
+  }
+}
+
+.stats {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 1.5rem;
+}
+
+.stats .stat {
+  font-size: 0.85rem;
+  line-height: 0.85rem;
+  font-weight: 500;
+  min-height: 1rem;
+  padding: 0.25rem 0.5rem;
+  background-color: #0000003f;
+  backdrop-filter: blur(0.25rem);
+  border-radius: 0.6rem;
+  color: #ffffffd7;
+}
+
+.back {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0.35rem;
+  min-height: 1.5rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  line-height: 0.9rem;
+  cursor: pointer;
+  color: #ffffffa8 !important;
+  /* background-color: red; */
+  width: fit-content;
+  border-radius: 0.5rem;
+  backdrop-filter: blur(0.25rem);
+  transition: color 0.15s;
+  background-color: #0000003f;
+  transition: background-color 0.15s;
+}
+
+.back:hover {
+  color: #ffffff;
+  background-color: #0000005f;
+}
+
+.back * {
+  color: #ffffff60;
+}
+
+.back svg {
+  fill: #ffffff60;
+  min-height: 1.1rem;
+  min-width: 1.1em;
+  margin-right: 0.25rem;
+}

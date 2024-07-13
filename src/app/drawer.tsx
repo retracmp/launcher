@@ -1,4 +1,5 @@
 import { Link } from "@tanstack/react-router";
+import { open } from "@tauri-apps/api/shell";
 import { useEffect } from "react";
 import { DownloadCustomContent, hasPakInstalled } from "src/lib/import";
 import { useConfigControl } from "src/state/config";
@@ -53,7 +54,9 @@ const Drawer = () => {
       <Link className="item" to="/snow/servers">
         SERVERS
       </Link>
-      <button className="item">ITEM SHOP</button>
+      <Link className="item" to="/snow/stats">
+        LEADERBOARDS
+      </Link>
       <s></s>
       {!hasPakInstalled ||
         (!libraryControl.pakValid &&
@@ -65,7 +68,14 @@ const Drawer = () => {
             >
               GET UPDATE
             </button>
-          )) || <button className="item donate">DONATE</button>}
+          )) || (
+          <button
+            onClick={() => open("https://donations.retrac.site")}
+            className="item donate"
+          >
+            DONATE
+          </button>
+        )}
       <button className="item" onClick={() => setSettingsOpen(true)}>
         SETTINGS
       </button>

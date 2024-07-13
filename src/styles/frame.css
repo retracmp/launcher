@@ -78,22 +78,6 @@
   font-weight: 600;
 }
 
-.tauriFrameInformation span strong.Llama {
-  color: #6cffff;
-}
-
-.tauriFrameInformation span strong.Crystal {
-  color: #fa5eff;
-}
-
-.tauriFrameInformation span strong.Retrac {
-  color: #fff45e;
-}
-
-.tauriFrameInformation span strong.Ultimate {
-  color: #ff9925;
-}
-
 .tauriFrameInformation span strong.Booster {
   color: #f47fff;
 }
@@ -101,6 +85,30 @@
 .tauriFrameInformation span strong.Content {
   color: #ff2b2b;
   font-weight: 700;
+}
+
+.tauriFrameInformation span strong.PUBG {
+  color: #cb23b5;
+}
+
+.tauriFrameInformation span strong.Fever {
+  color: #fff45e;
+}
+
+.tauriFrameInformation span strong.Llama {
+  color: #6cffff;
+}
+
+.tauriFrameInformation span strong.Gamer {
+  color: #c3ff00;
+}
+
+.tauriFrameInformation span strong.Crystal {
+  color: #b135ff;
+}
+
+.tauriFrameInformation span strong.Ultimate {
+  color: #ff9925;
 }
 
 .tauriFrame s {

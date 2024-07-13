@@ -8,13 +8,14 @@ import {
 } from "@tanstack/react-router";
 import { appWindow, LogicalSize } from "@tauri-apps/api/window";
 import { useUserControl } from "src/state/user";
+import { useConfigControl } from "src/state/config";
 
 import CredentialsPage from "src/pages/credentials";
 import Frame from "src/app/frame";
 import Snow from "src/pages/snow";
 import Online from "src/pages/online";
 import Servers from "src/pages/servers";
-import { useConfigControl } from "src/state/config";
+import Leaderboards from "src/pages/leaderboards";
 
 export const rootRoute = createRootRoute({
   component: () => (
@@ -32,10 +33,10 @@ export const credentialsRoute = createRoute({
   beforeLoad: () => {
     const token = useUserControl.getState().access_token;
     if (!token) {
-      appWindow.setSize(new LogicalSize(320, 530));
+      appWindow.setSize(new LogicalSize(400, 530));
       appWindow.setResizable(false);
-      appWindow.setMaxSize(new LogicalSize(320, 530));
-      appWindow.setMinSize(new LogicalSize(320, 530));
+      appWindow.setMaxSize(new LogicalSize(400, 530));
+      appWindow.setMinSize(new LogicalSize(400, 530));
       return;
     }
 
@@ -59,7 +60,7 @@ export const snowRoute = createRoute({
     appWindow.setResizable(true);
     appWindow.setMaximizable(false);
     appWindow.setMaxSize(new LogicalSize(1020, 730));
-    appWindow.setMinSize(new LogicalSize(320, 450));
+    appWindow.setMinSize(new LogicalSize(400, 450));
   },
 });
 
@@ -81,9 +82,20 @@ export const snowServersRoute = createRoute({
   component: Servers,
 });
 
+export const snowLeaderboardRoute = createRoute({
+  getParentRoute: () => snowRoute,
+  path: "/stats",
+  component: Leaderboards,
+});
+
 const tree = rootRoute.addChildren([
   credentialsRoute,
-  snowRoute.addChildren([snowIndexRoute, snowPlayerRoute, snowServersRoute]),
+  snowRoute.addChildren([
+    snowIndexRoute,
+    snowPlayerRoute,
+    snowServersRoute,
+    snowLeaderboardRoute,
+  ]),
 ]);
 
 const router = createRouter({

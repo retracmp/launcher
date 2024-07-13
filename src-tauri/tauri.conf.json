@@ -7,7 +7,7 @@
   },
   "package": {
     "productName": "Retrac Launcher",
-    "version": "1.0.8"
+    "version": "1.0.9"
   },
   "tauri": {
     "allowlist": {
@@ -27,10 +27,11 @@
         "maximizable": false,
         "resizable": false,
         "title": "Retrac Launcher",
-        "width": 320,
+        "width": 400,
         "height": 154,
         "decorations": false,
-        "center": true
+        "center": true,
+        "transparent": true
       }
     ],
     "security": {

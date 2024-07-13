@@ -26,8 +26,8 @@ const Offline = () => {
               </section>
             </div>
           </div>
+          <PlaySnow />
         </div>
-        <PlaySnow />
       </div>
     </DrawerContainer>
   );

@@ -92,6 +92,9 @@ type DiscordAccount = {
   HasRetracPlusRole: boolean;
   HasRetracUltimateRole: boolean;
   LastBoostedAt: string;
+  HasGamerDonatorRole: bool;
+  HasPUBGDonatorRole: bool;
+  HasFeverDonatorRole: bool;
 };
 
 type Ban = {
@@ -110,6 +113,20 @@ type SeasonStat = {
   BookXP: number;
   BookPurchased: boolean;
   Hype: number;
+  Eliminations: int;
+  MatchesPlayed: int;
+  Top1_1: int;
+  Top10_1: int;
+  Top25_1: int;
+  Top1_2: int;
+  Top7_2: int;
+  Top15_2: int;
+  Top1_3: int;
+  Top5_3: int;
+  Top12_3: int;
+  Top1_4: int;
+  Top5_4: int;
+  Top10_4: int;
 };
 
 type Person = {
@@ -174,7 +191,7 @@ type DownloadProgress_rust = {
 };
 
 type ServersResponse = {
-  Buckets: Record<string, Bucket>;
+  Buckets: Bucket[];
 };
 
 type Bucket = {
@@ -185,12 +202,6 @@ type Bucket = {
   Queue: string[];
 };
 
-enum ServerStatus {
-  Loading = 0,
-  Joinable = 1,
-  Closed = 2,
-}
-
 type Server = {
   ID: string;
   Address: string;
@@ -198,4 +209,153 @@ type Server = {
   Constraint: string;
   Status: ServerStatus;
   Parties: string[];
+  DonatorOnly: bool;
+};
+
+type PlayersInfoResponse = Array<{
+  id: string;
+  displayName: string;
+}>;
+
+type LeaderboardResponse = Record<string, SeasonStat>;
+
+type Catalog = {
+  ID: string;
+  Sections: Section[];
+  Name: string;
+};
+
+type Section = {
+  ID: string;
+  CatalogID: string;
+  Name: string;
+  Offers: Offer[];
+  // itemOffers: Offer[];
+  // moneyOffers: Offer[];
+  // kitOffers: Offer[];
+  // passOffers: Offer[];
+};
+
+type Offer = {
+  ID: string;
+  ShopSectionID: string;
+  Type: string;
+  Rewards: Reward[];
+  Price: {
+    ID: string;
+    ShopOfferID: string;
+    PriceType: string;
+    SaleType: string;
+    OriginalPrice: number;
+    FinalPrice: number;
+  };
+  Display: {
+    ID: string;
+    ShopOfferID: string;
+    Title: string;
+    Description: string;
+    ShortDescription: string;
+    LongDescription: string;
+  };
+  Meta: {
+    ID: string;
+    ShopOfferID: string;
+    TileSize: string;
+    SectionID: string;
+    DisplayAssetPath: string;
+    NewDisplayAssetPath: string;
+    BannerOverride: string;
+    Giftable: boolean;
+    Refundable: boolean;
+    PriorityShop: number;
+    PriorityCategory: number;
+    OnlyOnce: boolean;
+    OriginalOffer: number;
+    ExtraBonus: number;
+    FeaturedImageURL: string;
+    ReleaseSeason: number;
+    IconSize: string;
+    CurrencyAnalyticsName: string;
+    Categories: string[];
+  };
+};
+
+type Reward = {
+  ID: string;
+  Template: string;
+  BackendValue: string;
+  Quantity: number;
+  ProfileType: string;
+  Status: number;
+  ShopOfferID: string;
+};
+
+type FortniteApiResult = {
+  id: string;
+  name: string;
+  description: string;
+  type: {
+    value: string;
+    displayValue: string;
+    backendValue: string;
+  };
+  rarity: {
+    value: string;
+    displayValue: string;
+    backendValue: string;
+  };
+  set: {
+    value: string;
+    text: string;
+    backendValue: string;
+  };
+  images: {
+    smallIcon: string;
+    icon: string;
+    featured: string;
+    lego: {
+      small: string;
+      large: string;
+      wide: string;
+    };
+  };
+  variants: Array<{
+    channel: string;
+    type: string;
+    options: Array<{
+      tag: string;
+      name: string;
+      image: string;
+    }>;
+  }>;
+  gameplayTags: string[];
+  path: string;
+  added: string;
+};
+
+//
+
+type RetracApiResponse = {
+  sets: Record<
+    string,
+    {
+      backendNmae: string;
+      displayName: string;
+      items: FortniteApiResult[];
+    }
+  >;
+  items: Record<string, FortniteApiResult>;
+};
+
+type ContentPagesResult = {
+  battleroyalenewsv2?: {
+    news: {
+      motds: Array<{
+        id: string;
+        image: string;
+        title: string;
+        body: string;
+      }>;
+    };
+  };
 };

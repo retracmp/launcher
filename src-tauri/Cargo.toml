@@ -1,6 +1,6 @@
 [package]
 name = "retraclauncher"
-version = "1.0.8"
+version = "1.0.9"
 description = "Retrac Launcher"
 authors = ["ectrc"]
 edition = "2021"
@@ -15,6 +15,7 @@ winapi = { version = "0.3", features = ["tlhelp32"] }
 tauri = { version = "1.5", features = [ "api-all"] }
 serde = { version = "1.0", features = ["derive"] }
 window-shadows = "0.2.2"
+window-vibrancy = "0.4"
 futures-util = "0.3.14"
 dll-injector = "0.1.2"
 zip-extract = "0.1.3"

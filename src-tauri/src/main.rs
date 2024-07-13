@@ -51,14 +51,24 @@ async fn experience(i: String, c: &str, _local: bool, edit_on_release: bool, dis
     std::thread::sleep(std::time::Duration::from_millis(100));
   }
 
-  let nvidia = carter::download("https://cdn.0xkaede.xyz/dlls", &format!("retrac_s{}.dll", version), nvidia_path.clone().to_str().unwrap(), &window).await;
-  if nvidia.is_err() {
-    return Err(format!("Could not download {} for reason {}", &format!("retrac_s{}.dll", version), nvidia.unwrap_err()));
+  // let mut dicord_rpc = path.clone();
+  // dicord_rpc.push("Engine\\Binaries\\ThirdParty\\Discord\\Win64\\discord-rpc.dll");
+  // while dicord_rpc.exists() {
+  //   if std::fs::remove_file(dicord_rpc.clone()).is_ok() {
+  //     break;
+  //   }
+
+  //   std::thread::sleep(std::time::Duration::from_millis(100));
+  // }
+
+  let client = carter::download("https://cdn.0xkaede.xyz/dlls", &format!("retrac_s{}.dll", version), nvidia_path.clone().to_str().unwrap(), &window).await;
+  if client.is_err() {
+    return Err(format!("Could not download {} for reason {}", &format!("retrac_s{}.dll", version), client.unwrap_err()));
   }
 
   let mut eac_path = path.clone();
-  eac_path.push("rrEasyAntiCheat.zip");
-  let eac = carter::download("https://cdn.0xkaede.xyz/data", "rrEasyAntiCheat.zip", eac_path.clone().to_str().unwrap(), &window).await;
+  eac_path.push("r10EasyAntiCheat.zip");
+  let eac = carter::download("https://cdn.0xkaede.xyz/data", "r10EasyAntiCheat.zip", eac_path.clone().to_str().unwrap(), &window).await;
   if eac.is_err() {
     return Err("Could not download EasyAntiCheat_final.zip".to_string());
   }
@@ -155,7 +165,10 @@ fn main() {
     .setup(|app| {
       let window = app.get_window("main").unwrap();
       lam(window.clone());
-      set_shadow(&window, true).expect("Unsupported platform!");
+      set_shadow(window.clone(), true).expect("Unsupported platform!");
+
+      // #[cfg(target_os = "windows")]
+      // apply_blur(&window, Some((18, 18, 18, 125))).expect("Unsupported platform! 'apply_blur' is only supported on Windows");
 
       tauri_plugin_deep_link::register("snow", move |request| {
         let re = Regex::new(r"snow://auth:([^/]+)").unwrap();

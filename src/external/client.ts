@@ -1,7 +1,17 @@
 import axios from "axios";
 import { discord } from "./discord";
-import { code, okay, player } from "./person";
-import { sizes, stats, version } from "./launcher";
+import { code, okay, player, playersInfo } from "./person";
+import {
+  content_pages,
+  get_item,
+  items,
+  leaderboards,
+  servers,
+  shop,
+  sizes,
+  stats,
+  version,
+} from "./launcher";
 import { useConfigControl } from "src/state/config";
 
 const localAxiosClient = axios.create({
@@ -11,6 +21,8 @@ const localAxiosClient = axios.create({
 const finalAxiosClient = axios.create({
   baseURL: "https://retrac.0xkaede.xyz/",
 });
+
+export const isDevBuildMode = import.meta.env.MODE === "development";
 
 export const axiosClient = () =>
   useConfigControl.getState().use_localhost
@@ -25,8 +37,28 @@ export const endpoints = {
   GET_LAUNCHER_STATS: "/snow/launcher",
   GET_BUCKET_ASSET_SIZES: "/snow/launcher/sizes",
   GET_SERVERS: "/snow/servers",
+  GET_LEADERBOARD: "/snow/player/leaderboards",
+  GET_ACCOUNTS: "/account/api/public/account",
+  GET_SHOP: "/admin/shop/today",
+  GET_COSMETICS: "/snow/cosmetics",
+  CONTENT_PAGES: "/content/api/pages/fortnite-game",
 };
 
-const client = { discord, player, okay, code, stats, sizes, version };
+const client = {
+  discord,
+  player,
+  okay,
+  code,
+  stats,
+  sizes,
+  version,
+  servers,
+  playersInfo,
+  leaderboards,
+  shop,
+  retrac_items: items,
+  get_item,
+  content_pages,
+};
 
 export default client;

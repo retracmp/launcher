@@ -1,0 +1,27 @@
+.locker {
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+  gap: 0.5rem;
+  min-width: 20rem;
+}
+
+.locker .item {
+  display: flex;
+  width: 100%;
+  /* height: 8rem; */
+  background-color: var(--PLAYER_BG);
+  border-radius: 0.35rem;
+  backdrop-filter: blur(0.35rem);
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  min-width: 6rem;
+}
+
+.subtitle {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #ffffff8a;
+  text-transform: uppercase;
+}

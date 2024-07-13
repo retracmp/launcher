@@ -78,3 +78,30 @@ export const code = async (t: string): Promise<SnowResponse<string>> => {
     data: response.data,
   };
 };
+
+export const playersInfo = async (
+  players: string[]
+): Promise<PlayersInfoResponse> => {
+  if (players.length === 0) {
+    return [];
+  }
+
+  const playersQuery =
+    `?accountId=${players[0]}` +
+    players
+      .slice(1)
+      .map((p) => `&accountId=${p}`)
+      .join("");
+
+  const response = await axiosClient()
+    .get<PlayersInfoResponse>(endpoints.GET_ACCOUNTS + playersQuery)
+    .catch((e: AxiosError<ErrorResponse>) => {
+      return e;
+    });
+
+  if (response instanceof AxiosError) {
+    return [];
+  }
+
+  return response.data;
+};

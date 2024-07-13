@@ -31,20 +31,26 @@ const PlaySnow = () => {
     s.setPakValid,
   ]);
 
+  const { data: launcher } = useQuery<LauncherVersion>({
+    queryKey: ["version"],
+    queryFn: queryLauncherVersion,
+  });
+
+  // remove . and turn int oa 3 digit number
+  const launcherNum = parseInt(
+    launcher?.current_version.replace(/\./g, "") || "0"
+  );
+
   const fortniteEntry = getCurrentEntry();
   const isFortniteRunning = currentFortniteProcess > 0;
   const disableButton =
     (isFortniteRunning && oneSession) ||
     !fortniteEntry ||
     (!username && type) ||
-    (!type && !pakInstalled);
+    (!type && !pakInstalled) ||
+    launcherNum > 109;
 
   const token = useUserControl((s) => s.access_token);
-
-  const { data: launcher } = useQuery<LauncherVersion>({
-    queryKey: ["version"],
-    queryFn: queryLauncherVersion,
-  });
 
   useEffect(() => {
     add("fortnite_process_id", set);
@@ -88,7 +94,7 @@ const PlaySnow = () => {
     if (!username && type) return "Invalid Credentials";
     if (!type && !pakInstalled) return "Custom Pak Missing";
     if (!launcher) return "Checking Version";
-    if (launcher.current_version !== "1.0.8") return "Update Retrac Launcher";
+    if (launcherNum > 109) return "Update Retrac Launcher";
     if (type) return "Local Backend";
     return "Launch Retrac";
   };

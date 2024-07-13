@@ -2,13 +2,14 @@
   display: flex;
   flex-direction: row;
   align-items: end;
-  /* margin-top: 0.85rem; */
+  margin-top: 1rem;
   padding: 0.5rem 0.05rem;
   gap: 0.25rem;
   width: 100%;
   background-color: var(--PLAYER_BG);
   border-radius: 0.35rem;
   backdrop-filter: blur(0.5rem);
+  min-height: 64px;
 }
 
 .player .avatar {

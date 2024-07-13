@@ -9,7 +9,7 @@
   flex-direction: column;
   min-width: min(12.5rem, 30vw);
   padding: 0.9rem;
-  padding-top: 0;
+  padding-top: 0.85rem;
   padding-left: 0.875rem;
   padding-right: 0.1rem;
   gap: 0.25rem;

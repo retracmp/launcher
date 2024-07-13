@@ -1,0 +1,59 @@
+.newsContainer {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  background-color: var(--PLAYER_BG);
+  border-radius: 0.35rem;
+  backdrop-filter: blur(0.5rem);
+  min-height: 13rem;
+}
+
+.news {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  max-width: 100%;
+  max-height: 13rem;
+  /* flex: 1; */
+  overflow: hidden;
+  background-size: cover;
+}
+
+.news::after {
+  z-index: 99;
+  content: "";
+  width: calc(100% - 0.5rem);
+  height: calc(100% - 0.5rem);
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 0.35rem;
+  border: 0.25rem solid #ffffff09;
+}
+
+.news img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 0.35rem;
+}
+
+.news .info {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  padding: 1rem;
+  width: calc(100%);
+  background: linear-gradient(180deg, #00000000, #3b3b3b8f);
+}
+
+.news .info p {
+  font-size: 0.85rem;
+  line-height: 1rem;
+  font-weight: 500;
+  color: #c2c2c2af;
+  text-shadow: 0 0 1rem #ffffff0e;
+  font-family: var(--font-body);
+}

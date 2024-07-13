@@ -19,7 +19,10 @@ import { FaCog } from "react-icons/fa";
 enum ERole {
   None = "Member",
   ContentCreator = "Content Creator",
+  PUBGDonator = "PUBG Donator",
+  FeverDonator = "Fever Donator",
   LlamaDonator = "Llama Donator",
+  GamerDonator = "Gamer Donator",
   CrystalDonator = "Crystal Donator",
   RetracPlusDonator = "Retrac Plus Donator",
   RetracUltimateDonator = "Ultimate Donator",
@@ -30,7 +33,10 @@ const Frame = () => {
   const config = useConfigControl();
   const libraryControl = useLibraryControl();
 
-  const [settingsOpen] = useStates((s) => [s.settings_page_active]);
+  const [settingsOpen, setSettingsOpen] = useStates((s) => [
+    s.settings_page_active,
+    s.set_settings_page_active,
+  ]);
 
   const { data: launcherStats, error } = useQuery<LauncherStats>({
     queryKey: ["launcher"],
@@ -64,7 +70,10 @@ const Frame = () => {
     if (discord.HasRetracUltimateRole) return ERole.RetracUltimateDonator;
     if (discord.HasRetracPlusRole) return ERole.RetracPlusDonator;
     if (discord.HasCrystalDonatorRole) return ERole.CrystalDonator;
+    if (discord.HasGamerDonatorRole) return ERole.GamerDonator;
     if (discord.HasLlamaDonatorRole) return ERole.LlamaDonator;
+    if (discord.HasFeverDonatorRole) return ERole.FeverDonator;
+    if (discord.HasPUBGDonatorRole) return ERole.PUBGDonator;
     if (discord.HasContentCreatorRole) return ERole.ContentCreator;
     if (discord.LastBoostedAt != "") return ERole.ServerBooster;
     return ERole.None;
@@ -81,19 +90,21 @@ const Frame = () => {
           {!config.drawer_open && (
             <button
               data-tauri-drag-region
-              onClick={() => appWindow.minimize()}
+              onClick={() => setSettingsOpen(true)}
               className="tauriFrameAction"
             >
               <FaCog />
             </button>
           )}
-          <button
-            data-tauri-drag-region
-            onClick={() => appWindow.minimize()}
-            className="tauriFrameAction"
-          >
-            <HiMinusSm />
-          </button>
+          {config.drawer_open && (
+            <button
+              data-tauri-drag-region
+              onClick={() => appWindow.minimize()}
+              className="tauriFrameAction"
+            >
+              <HiMinusSm />
+            </button>
+          )}
           <button
             data-tauri-drag-region
             onClick={() => appWindow.close()}

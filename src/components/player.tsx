@@ -32,7 +32,6 @@ const Player_SEASON14 = () => {
   );
 
   const loadoutId = loadoutIds[0];
-
   const loadout = player?.snapshot.AthenaProfile.Loadouts[loadoutId];
   const character = player?.snapshot.AthenaProfile.Items[
     loadout?.CharacterID || ""

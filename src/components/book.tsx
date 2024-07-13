@@ -7,14 +7,13 @@ const Book = () => {
   const {
     data: playerReal,
     isLoading,
-    isFetching,
     error,
   } = useQuery({
     queryKey: ["player"],
     queryFn: queryPerson,
   });
 
-  const condition = isLoading || isFetching || error;
+  const condition = isLoading || error;
   const player = condition ? null : playerReal;
 
   return (

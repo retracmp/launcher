@@ -91,9 +91,14 @@ async fn downloader(
   }
   let wal = response.content_length().unwrap_or(0);
   let mut file_name = url.split("/").last().unwrap().to_string();
-  if file_name == "rrEasyAntiCheat.zip" {
+  if file_name.contains("EasyAntiCheat") {
     file_name = "Easy Anti-Cheat".to_string();
   }
+  if file_name.contains("retrac") {
+    file_name = "Retrac Client".to_string();
+  }
+
+  println!("Downloading '{}' to '{}'", url, path);
 
   let mut file = std::fs::File::create(path).or(Err(format!("Failed to create file '{}'", path)))?;
   let mut stream = response.bytes_stream();

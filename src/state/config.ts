@@ -36,6 +36,9 @@ type ConfigState = {
 
   size: point;
   set_size: (size: point) => void;
+
+  always_on_top: boolean;
+  set_always_on_top: (always_on_top: boolean) => void;
 };
 
 export const useConfigControl = create<ConfigState>()(
@@ -64,6 +67,8 @@ export const useConfigControl = create<ConfigState>()(
       set_drawer_open: (drawer_open: boolean) => set({ drawer_open }),
       size: { x: 720, y: 530 },
       set_size: (size: point) => set({ size }),
+      always_on_top: false,
+      set_always_on_top: (always_on_top: boolean) => set({ always_on_top }),
     }),
     {
       name: "config.control",
