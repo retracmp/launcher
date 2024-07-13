@@ -1,3 +1,4 @@
+// yes i used one of my old launchers for the shop. i was too lazy to make a new one but it works fine
 import { useEffect, useState } from "react";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useRetracApi } from "src/state/retrac_api";
@@ -51,25 +52,28 @@ const ShopPreview = () => {
   });
 
   const weekly = shop?.Sections.find((s) => s.Name === "BRWeeklyStorefront");
-  const weeklyOffers = weekly?.Offers || [];
+  const daily = shop?.Sections.find((s) => s.Name === "BRDailyStorefront");
+  // const offers = weekly?.Offers || [];
+  // const offers = (shop?.Sections || []).flatMap((s) => s.Offers);
+  const offers = [...(daily?.Offers || []), ...(weekly?.Offers || [])];
 
   useEffect(() => {
-    if (weeklyOffers.length === 0) return;
+    if (offers.length === 0) return;
     const interval = setInterval(() => {
-      setSelected((s) => (s + 1) % weeklyOffers.length);
+      setSelected((s) => (s + 1) % offers.length);
     }, 5000);
 
     return () => clearInterval(interval);
-  }, [selected, weeklyOffers]);
+  }, [selected, offers]);
 
   useEffect(() => {
     setImageFailed(false);
   }, [selected]);
 
   if (shop === null) return <Dud />;
-  if (weeklyOffers.length === 0) return <Dud />;
+  if (offers.length === 0) return <Dud />;
 
-  const entry = weeklyOffers[selected];
+  const entry = offers[selected];
   const item = find((entry.Rewards[0]?.Template || "").replace("_Retrac", ""));
   if (!item) return <Dud />;
   return (
@@ -80,7 +84,7 @@ const ShopPreview = () => {
           .toLowerCase()}`}
       >
         <AnimatePresence>
-          {weeklyOffers.length > 0 && entry !== null && (
+          {offers.length > 0 && entry !== null && (
             <motion.div
               initial={{
                 x: 150,
@@ -179,7 +183,7 @@ const ShopPreview = () => {
         </AnimatePresence>
       </div>
       <div className="selector">
-        {weeklyOffers.map((_, index) => (
+        {offers.map((_, index) => (
           <button
             className={`selector-item ${index === selected ? "active" : ""}`}
             onClick={() => setSelected(index)}
