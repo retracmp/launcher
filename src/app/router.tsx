@@ -4,7 +4,6 @@ import {
   createRoute,
   createRouter,
   Navigate,
-  redirect,
 } from "@tanstack/react-router";
 import { appWindow, LogicalSize } from "@tauri-apps/api/window";
 import { useUserControl } from "src/state/user";
@@ -16,6 +15,7 @@ import Snow from "src/pages/snow";
 import Online from "src/pages/online";
 import Servers from "src/pages/servers";
 import Leaderboards from "src/pages/leaderboards";
+import Onboard from "src/pages/onboard";
 
 export const rootRoute = createRootRoute({
   component: () => (
@@ -23,7 +23,7 @@ export const rootRoute = createRootRoute({
       <Frame />
     </Suspense>
   ),
-  notFoundComponent: () => <Navigate to="/credentials" />,
+  notFoundComponent: () => <Navigate to="/snow" />,
 });
 
 export const credentialsRoute = createRoute({
@@ -35,15 +35,20 @@ export const credentialsRoute = createRoute({
     if (!token) {
       appWindow.setSize(new LogicalSize(400, 530));
       appWindow.setResizable(false);
-      appWindow.setMaxSize(new LogicalSize(400, 530));
-      appWindow.setMinSize(new LogicalSize(400, 530));
       return;
     }
 
-    throw redirect({
-      to: "/snow",
-    });
+    console.log("redirecting to /snow");
+    // throw redirect({
+    //   to: "/snow",
+    // });
   },
+});
+
+export const onboardRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/onboard",
+  component: Onboard,
 });
 
 export const snowRoute = createRoute({
@@ -53,14 +58,16 @@ export const snowRoute = createRoute({
   beforeLoad: () => {
     appWindow.setSize(
       new LogicalSize(
-        useConfigControl.getState().size.x,
-        useConfigControl.getState().size.y
+        useConfigControl.getState().size.x < 400
+          ? 400
+          : useConfigControl.getState().size.x,
+        useConfigControl.getState().size.y < 530
+          ? 530
+          : useConfigControl.getState().size.y
       )
     );
     appWindow.setResizable(true);
     appWindow.setMaximizable(false);
-    appWindow.setMaxSize(new LogicalSize(1020, 730));
-    appWindow.setMinSize(new LogicalSize(400, 450));
   },
 });
 
@@ -90,6 +97,7 @@ export const snowLeaderboardRoute = createRoute({
 
 const tree = rootRoute.addChildren([
   credentialsRoute,
+  onboardRoute,
   snowRoute.addChildren([
     snowIndexRoute,
     snowPlayerRoute,

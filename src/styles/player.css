@@ -32,6 +32,9 @@
   gap: 0.15rem;
   height: 100%;
   margin-left: 0.5rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .player .information span {
@@ -41,6 +44,9 @@
   color: #ffffff65;
   text-shadow: 0 0 1rem #ffffff0e;
   font-family: var(--font-body);
+  white-space: nowrap;
+  /* overflow: hidden; */
+  text-overflow: ellipsis;
 }
 
 .player .information span.name {
@@ -51,6 +57,6 @@
   font-family: var(--font-body);
   margin-bottom: 0.3rem;
   white-space: nowrap;
-  overflow: hidden;
+  /* overflow: hidden; */
   text-overflow: ellipsis;
 }

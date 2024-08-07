@@ -1,0 +1,88 @@
+.onboardContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0rem 1rem;
+  padding-bottom: 1rem;
+  flex: 1;
+  user-select: none;
+}
+
+.onboardContainer header {
+  width: 22rem;
+  margin: 0 auto;
+  background-color: rgba(206, 206, 206, 0.055);
+  padding: 1rem;
+  border-radius: 0.35rem;
+  padding-top: 0.95rem;
+}
+
+.onboardContainer header h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-color);
+  font-family: var(--font-body);
+}
+
+.onboardContainer header p {
+  font-size: 0.85rem;
+  font-weight: 400;
+  color: var(--semi-active);
+  font-family: var(--font-body);
+}
+
+button.wide {
+  width: 22rem;
+  margin: 0 auto;
+  background-color: #cecece0e;
+  border-radius: 0.35rem;
+  padding: 0.6rem 1rem;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--nearly-active);
+  transition: background-color 150ms;
+}
+
+button.wide:hover {
+  background-color: rgba(206, 206, 206, 0.1);
+}
+
+div.area {
+  min-width: 22rem;
+  height: 3rem;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  height: min-content;
+}
+
+button.cube {
+  width: 100%;
+  margin: 0 auto;
+  background-color: #cecece0e;
+  border-radius: 0.35rem;
+  padding: 0.6rem 1rem;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--txt-color);
+  transition: background-color 150ms;
+}
+
+button.cube.less {
+  width: 15rem;
+}
+
+button.cube:hover {
+  background-color: rgba(206, 206, 206, 0.1);
+}
+
+button.cube:disabled {
+  background-color: #cecece0e;
+  color: var(--semi-active);
+  cursor: not-allowed;
+}

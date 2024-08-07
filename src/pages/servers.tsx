@@ -1,8 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
-import { queryPerson, queryServers } from "src/external/query";
+import { queryServers } from "src/external/query";
 
 import "src/styles/servers.css";
-import { FaLock, FaUnlock } from "react-icons/fa6";
+// import { FaLock, FaUnlock } from "react-icons/fa6";
 import { AnimatePresence, motion } from "framer-motion";
 import { useConfigControl } from "src/state/config";
 import { Link } from "@tanstack/react-router";
@@ -18,15 +18,15 @@ const Servers = () => {
 
   if (error || !servers) return null;
 
-  const flatMap = servers.Buckets.flatMap((bucket) =>
-    Object.values(bucket.Servers)
+  const flatMap = (servers.buckets || []).flatMap(
+    (bucket) => Object.values(bucket.servers || []) || []
   );
-  const waitingToStart = flatMap.filter((server) => server.Status === 0);
-  const joinable = flatMap.filter((server) => server.Status === 1);
-  const closed = flatMap.filter((server) => server.Status === 2);
+  const waitingToStart = flatMap.filter((server) => (server.status || 0) === 0);
+  const joinable = flatMap.filter((server) => (server.status || 0) === 1);
+  const closed = flatMap.filter((server) => (server.status || 0) === 2);
 
   const totalInGame = flatMap.reduce(
-    (acc, server) => acc + server.Parties.length,
+    (acc, server) => acc + (server.partyIdsAssinged || []).length,
     0
   );
 
@@ -42,6 +42,20 @@ const Servers = () => {
         <span className="stat">{flatMap.length} servers up.</span>
       </div>
       <AnimatePresence>
+        {waitingToStart.length === 0 && joinable.length === 0 && (
+          <motion.section
+            animate="visible"
+            initial="hidden"
+            variants={{
+              hidden: { opacity: 0 },
+              visible: { opacity: 1, transition: { staggerChildren: 0.1 } },
+            }}
+          >
+            <motion.div className="server">
+              <p className="noServers">No servers are up right now.</p>
+            </motion.div>
+          </motion.section>
+        )}
         {(waitingToStart.length > 0 || joinable.length > 0) && (
           <motion.section
             animate="visible"
@@ -52,10 +66,10 @@ const Servers = () => {
             }}
           >
             {waitingToStart.map((server) => (
-              <Server key={server.ID} server={server} />
+              <Server key={server.id} server={server} />
             ))}
             {joinable.map((server) => (
-              <Server key={server.ID} server={server} />
+              <Server key={server.id} server={server} />
             ))}
           </motion.section>
         )}
@@ -69,7 +83,7 @@ const Servers = () => {
             }}
           >
             {closed.map((server) => (
-              <Server key={server.ID} server={server} />
+              <Server key={server.id} server={server} />
             ))}
           </motion.section>
         )}
@@ -83,11 +97,11 @@ type ServerProps = {
 };
 
 const Server = (props: ServerProps) => {
-  const { data: player } = useQuery({
-    queryKey: ["player"],
-    queryFn: queryPerson,
-    enabled: false,
-  });
+  // const { data: player } = useQuery({
+  //   queryKey: ["player"],
+  //   queryFn: queryPerson,
+  //   enabled: false,
+  // });
 
   const stateNiceText = ((state: number) => {
     switch (state) {
@@ -100,19 +114,25 @@ const Server = (props: ServerProps) => {
       default:
         return "Unknown";
     }
-  })(props.server.Status);
+  })(props.server.status || 0);
 
-  const [_, __, region, playlist] = props.server.Constraint.split(":");
+  const [_, __, region, playlist] = props.server.bucket_id.split(":");
   const playlistNiceText = ((playlist: string) => {
     switch (playlist) {
       case "playlist_defaultsolo":
         return "Solos";
+      case "playlist_defaultduo":
+        return "Duos";
+      case "playlist_defaulttrio":
+        return "Trios";
       case "playlist_vamp_solo":
         return "Lategame Solos";
+      case "showdown":
+        return "Arena";
       default:
         return "Unknown";
     }
-  })(playlist);
+  })(playlist.toLocaleLowerCase());
 
   const regionNiceText = ((region: string) => {
     switch (region) {
@@ -125,21 +145,6 @@ const Server = (props: ServerProps) => {
     }
   })(region);
 
-  const isDonator = !((): boolean => {
-    if (!player) return true;
-    const discord = player.snapshot.Discord;
-
-    if (discord.HasRetracPlusRole) return false;
-    if (discord.HasCrystalDonatorRole) return false;
-    if (discord.HasGamerDonatorRole) return false;
-    if (discord.HasLlamaDonatorRole) return false;
-    if (discord.HasFeverDonatorRole) return false;
-    if (discord.HasPUBGDonatorRole) return false;
-    if (discord.HasContentCreatorRole) return false;
-    if (discord.LastBoostedAt != "") return false;
-    return true;
-  })();
-
   return (
     <motion.div
       variants={{
@@ -151,21 +156,21 @@ const Server = (props: ServerProps) => {
     >
       <div className="row">
         <h3>
-          <b className={props.server.Status === 1 ? "open" : ""}>
+          <b className={(props.server.status || 0) === 1 ? "open" : ""}>
             {stateNiceText.toUpperCase()}
           </b>{" "}
           <p>•</p> {playlistNiceText}
         </h3>
         <s></s>
         <div className="tags">
-          {props.server.DonatorOnly && (
+          {/* {props.server.DonatorOnly && (
             <p className="donateonly">
               {!isDonator ? <FaLock /> : <FaUnlock />}
               <span className="text">Donators Only</span>
             </p>
-          )}
+          )} */}
           <p className="players">
-            {props.server.Parties.length}
+            {(props.server.partyIdsAssinged || []).length}
             <small>/100</small>
           </p>
         </div>
@@ -174,15 +179,18 @@ const Server = (props: ServerProps) => {
         <div className="progress">
           <div
             className={
-              "progress-bar " + (props.server.Status === 2 ? "closed" : "")
+              "progress-bar " +
+              ((props.server.status || 0) === 2 ? "closed" : "")
             }
-            style={{ width: `${props.server.Parties.length}%` }}
+            style={{
+              width: `${(props.server.partyIdsAssinged || []).length}%`,
+            }}
           />
         </div>
       </div>
       <div className="row">
         <span className="serverId">
-          <b></b> {regionNiceText} • {props.server.ID}
+          <b></b> {regionNiceText} • {props.server.id}
         </span>
       </div>
     </motion.div>

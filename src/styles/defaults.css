@@ -6,15 +6,15 @@ button.default {
   gap: 0.5rem;
   padding: 0.5rem 1rem;
   font-size: 1.15rem;
-  font-weight: 700;
-  font-family: var(--font-header);
+  font-weight: 800;
+  font-family: var(--font-body);
   color: #000;
   cursor: pointer;
   min-height: max-content;
   outline: none;
   border: none;
   border-radius: 0.3rem;
-  background-color: #ffffff;
+  background-color: #e0e0e0;
   backdrop-filter: blur(0.5rem);
   transition: background-color 80ms;
 }
@@ -58,6 +58,47 @@ button.default.green {
   font-weight: 700;
   background-image: linear-gradient(90deg, var(--green), var(--green-dark));
   min-height: 2.55rem;
+}
+
+button.default.purple {
+  color: #fff;
+  font-weight: 600;
+  font-family: var(--font-body);
+  text-transform: uppercase;
+  font-weight: 700;
+  background-image: linear-gradient(90deg, #8e2de2, #6223e0);
+  min-height: 2.55rem;
+  transition: filter 100ms, box-shadow 100ms;
+}
+
+button.default.purple:disabled {
+  background-color: #36485c;
+  color: #ffffffbb;
+  cursor: not-allowed;
+  text-indent: 0;
+  background-image: linear-gradient(90deg, #8e2de2, #6223e0) !important;
+  filter: none !important;
+}
+
+button.default.purple:hover {
+  background-color: #8e2de2;
+  filter: hue-rotate(5deg);
+}
+
+button.default.orange {
+  color: #fff;
+  font-weight: 600;
+  font-family: var(--font-body);
+  text-transform: uppercase;
+  font-weight: 700;
+  background-image: linear-gradient(90deg, #f07c2e, #b89f13);
+  min-height: 2.55rem;
+  transition: filter 100ms, box-shadow 100ms;
+}
+
+button.default.orange:hover {
+  background-color: #f1a35a;
+  filter: hue-rotate(-15deg);
 }
 
 button.default.green:hover {
@@ -113,6 +154,14 @@ button.default.green.blur:hover {
 
 button.default.green.blur:disabled {
   background-color: #3a9c439a;
+}
+
+button.default.purple:hover {
+  background-color: #8e2de2;
+}
+
+button.default.purple:disabled {
+  background-color: #8e2de2;
 }
 
 button.default.discord:hover {

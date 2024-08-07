@@ -41,8 +41,8 @@
   --orange-dark: #e06e2f;
 
   --active: #ffffff;
-  --almost-active: #cdd5e6;
-  --nearly-active: #a9b9d3;
+  --almost-active: #e6e6e6;
+  --nearly-active: #d3d3d3;
   --semi-active: #a5a5a5;
 
   --COLOR: #054e053b;
@@ -105,10 +105,10 @@
 
 @keyframes rotate {
   0% {
-    filter: hue-rotate(0deg);
+    backdrop-filter: hue-rotate(0deg);
   }
   100% {
-    filter: hue-rotate(360deg);
+    backdrop-filter: hue-rotate(360deg);
   }
 }
 
@@ -117,15 +117,15 @@ html {
   background: transparent;
   background-color: transparent;
   overflow: hidden;
-}
-
-#root {
   background-color: var(--background);
   background-image: linear-gradient(
     var(--BG_ROTATE),
     var(--foreground) 5rem,
     var(--COLOR)
   ) !important;
+}
+
+#root {
   color: var(--active);
   overflow: hidden;
   border-radius: 0.5rem;
@@ -251,4 +251,14 @@ a[href] {
   .duo {
     flex-direction: column;
   }
+}
+
+.fil_empty_space {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  border-radius: 0.35rem;
+  background-color: #ffffff10;
+  backdrop-filter: blur(0.5rem);
 }

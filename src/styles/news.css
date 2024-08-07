@@ -8,6 +8,7 @@
   border-radius: 0.35rem;
   backdrop-filter: blur(0.5rem);
   min-height: 13rem;
+  overflow: hidden;
 }
 
 .news {
@@ -29,7 +30,8 @@
   position: absolute;
   top: 0;
   left: 0;
-  border-radius: 0.35rem;
+  border-radius: 0.25rem;
+  overflow: hidden;
   border: 0.25rem solid #ffffff09;
 }
 

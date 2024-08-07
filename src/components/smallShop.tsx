@@ -12,27 +12,7 @@ import moment from "moment";
 const Dud = () => {
   return (
     <div className="featured-shop-wrapper right">
-      <div className="featured-shop rare">
-        <div className="shop-animate-event">
-          <div className="typeAndTime">
-            <label className="itemType">FETCHING SHOP</label>
-            <label className="itemTime">
-              <FaClock />
-              24 hours
-            </label>
-          </div>
-          <div className="cosmetic">
-            <h2 className="name">PLEASE WAIT</h2>
-            <small className="description"></small>
-            <img
-              src="https://fortnite-api.com/images/cosmetics/br/cid_141_athena_commando_m_darkeagle/featured.png"
-              alt=""
-              className="image"
-              draggable={false}
-            />
-          </div>
-        </div>
-      </div>
+      <div className="featured-shop rare"></div>
     </div>
   );
 };
@@ -51,11 +31,12 @@ const ShopPreview = () => {
     queryFn: queryShop,
   });
 
-  const weekly = shop?.Sections.find((s) => s.Name === "BRWeeklyStorefront");
-  const daily = shop?.Sections.find((s) => s.Name === "BRDailyStorefront");
-  // const offers = weekly?.Offers || [];
-  // const offers = (shop?.Sections || []).flatMap((s) => s.Offers);
-  const offers = [...(weekly?.Offers || []), ...(daily?.Offers || [])];
+  const weekly = shop?.Storefronts.find((s) => s.Name === "BRWeeklyStorefront");
+  const daily = shop?.Storefronts.find((s) => s.Name === "BRDailyStorefront");
+  const offers = [
+    ...(weekly?.DBMtxOffers || []),
+    ...(daily?.DBMtxOffers || []),
+  ];
 
   useEffect(() => {
     if (offers.length === 0) return;
@@ -74,12 +55,13 @@ const ShopPreview = () => {
   if (offers.length === 0) return <Dud />;
 
   const entry = offers[selected];
-  const item = find((entry.Rewards[0]?.Template || "").replace("_Retrac", ""));
+  const item = find((entry.Grants[0]?.Template || "").replace("_Retrac", ""));
+  console.log(entry);
   if (!item) return <Dud />;
   return (
     <div className="featured-shop-wrapper right">
       <div
-        className={`featured-shop ${item.rarity.backendValue
+        className={`featured-shop ${item.Cosmetic.rarity.backendValue
           .split("::")[1]
           .toLowerCase()}`}
       >
@@ -103,17 +85,17 @@ const ShopPreview = () => {
                 bounce: 0.4,
               }}
               className="shop-animate-event"
-              key={item.name}
+              key={item.Cosmetic.name}
             >
               <div className="typeAndTime">
                 <label className="itemType">
-                  {item.rarity.displayValue.toUpperCase()}{" "}
-                  {item.type.displayValue.toUpperCase()}
+                  {item.Cosmetic.rarity.displayValue.toUpperCase()}{" "}
+                  {item.Cosmetic.type.displayValue.toUpperCase()}
                 </label>
                 <label className="itemTime">
                   <FaClock />
                   {/* // add 24 hours */}
-                  {moment(shop.ID).add(24, "hours").fromNow()}
+                  {moment(shop.Date).add(24, "hours").fromNow()}
                 </label>
               </div>
               <motion.div
@@ -130,11 +112,13 @@ const ShopPreview = () => {
                 }}
                 className="cosmetic"
               >
-                <h2 className="name">{item.name}</h2>
-                <small className="description">{item.description}</small>
+                <h2 className="name">{item.Cosmetic.name}</h2>
+                <small className="description">
+                  {item.Cosmetic.description}
+                </small>
                 {!image_failed && (
                   <img
-                    src={item.images.featured}
+                    src={item.Cosmetic.images.featured}
                     className="image"
                     draggable={false}
                     alt=""
@@ -143,7 +127,7 @@ const ShopPreview = () => {
                 )}
                 {image_failed && (
                   <img
-                    src={item.images.icon}
+                    src={item.Cosmetic.images.icon}
                     className="image"
                     draggable={false}
                     alt=""

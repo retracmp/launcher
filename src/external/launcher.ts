@@ -75,7 +75,7 @@ export const servers = async (): Promise<ServersResponse> => {
 
   if (response instanceof AxiosError) {
     return {
-      Buckets: [],
+      buckets: [],
     };
   }
 
@@ -94,7 +94,7 @@ export const leaderboards = async (t: string): Promise<LeaderboardResponse> => {
     });
 
   if (response instanceof AxiosError) {
-    return {};
+    return [];
   }
 
   return response.data;
@@ -131,7 +131,7 @@ export const items = async (): Promise<Record<string, FortniteApiResult>> => {
     return {};
   }
 
-  return response.data.items;
+  return response.data.cosmetics;
 };
 
 export const get_item = async (id: string): Promise<FortniteApiResult> => {
@@ -140,38 +140,40 @@ export const get_item = async (id: string): Promise<FortniteApiResult> => {
 
   if (!foundRetracItem) {
     return {
-      id: "CID_Nothing",
-      name: "Nothing",
-      description: "",
-      type: {
-        value: "",
-        displayValue: "",
-        backendValue: "",
-      },
-      rarity: {
-        value: "common",
-        displayValue: "cegendary",
-        backendValue: "EFortRarity::Common",
-      },
-      set: {
-        value: "",
-        text: "",
-        backendValue: "",
-      },
-      images: {
-        smallIcon: "",
-        icon: "",
-        featured: "",
-        lego: {
-          small: "",
-          large: "",
-          wide: "",
+      Cosmetic: {
+        id: "CID_Nothing",
+        name: "Nothing",
+        description: "",
+        type: {
+          value: "",
+          displayValue: "",
+          backendValue: "",
         },
+        rarity: {
+          value: "common",
+          displayValue: "cegendary",
+          backendValue: "EFortRarity::Common",
+        },
+        set: {
+          value: "",
+          text: "",
+          backendValue: "",
+        },
+        images: {
+          smallIcon: "",
+          icon: "",
+          featured: "",
+          lego: {
+            small: "",
+            large: "",
+            wide: "",
+          },
+        },
+        variants: [],
+        gameplayTags: [],
+        path: "",
+        added: "",
       },
-      variants: [],
-      gameplayTags: [],
-      path: "",
-      added: "",
     };
   }
 

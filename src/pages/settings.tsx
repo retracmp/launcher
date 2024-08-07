@@ -60,21 +60,7 @@ const Settings = () => {
     configControl.setTheme("theme" + theme);
   };
 
-  const disable_themes = ((): boolean => {
-    if (!player) return true;
-    const discord = player.snapshot.Discord;
-
-    if (discord.HasRetracPlusRole) return false;
-    if (discord.HasCrystalDonatorRole) return false;
-    if (discord.HasGamerDonatorRole) return false;
-    if (discord.HasLlamaDonatorRole) return false;
-    if (discord.HasFeverDonatorRole) return false;
-    if (discord.HasPUBGDonatorRole) return false;
-    if (discord.HasContentCreatorRole) return false;
-    if (discord.LastBoostedAt != "") return false;
-    if (discord.HasRetracUltimateRole) return false;
-    return true;
-  })();
+  const disable_themes = player?.Account.State.Packages.length === 0;
 
   const toggle_party = () => {
     const root = document.getElementById("root");

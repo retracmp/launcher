@@ -23,8 +23,8 @@
   padding-bottom: 0;
   min-width: 20rem;
   width: 100%;
-  min-height: 17.5rem;
-  max-height: 17.5rem;
+  min-height: 13.5rem;
+  max-height: 13.5rem;
   user-select: none;
   overflow: hidden;
   border-radius: 0.35rem;
@@ -94,14 +94,15 @@
   z-index: 2;
   font-size: 0.9rem;
   opacity: 0.9;
+  text-shadow: 0 0 0.75rem #00000081;
 }
 
 .featured-shop .cosmetic img.image {
   position: absolute;
-  top: 2rem;
+  top: 0.5rem;
   left: 50%;
   width: 130%;
-  height: 120%;
+  height: 130%;
   translate: -50%;
   filter: brightness(0.9);
   object-position: center;
