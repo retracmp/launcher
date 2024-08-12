@@ -1,7 +1,7 @@
 {
   "build": {
-    "beforeDevCommand": "clear && yarn dev",
-    "beforeBuildCommand": "clear && yarn build",
+    "beforeDevCommand": "cls && yarn dev",
+    "beforeBuildCommand": "cls && yarn build",
     "devPath": "http://localhost:1420",
     "distDir": "../dist"
   },
