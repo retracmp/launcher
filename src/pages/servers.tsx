@@ -26,7 +26,7 @@ const Servers = () => {
   const closed = flatMap.filter((server) => (server.status || 0) === 2);
 
   const totalInGame = flatMap.reduce(
-    (acc, server) => acc + (server.partyIdsAssinged || []).length,
+    (acc, server) => acc + (server.party_ids_assinged || []).length,
     0
   );
 
@@ -134,17 +134,6 @@ const Server = (props: ServerProps) => {
     }
   })(playlist.toLocaleLowerCase());
 
-  const regionNiceText = ((region: string) => {
-    switch (region) {
-      case "EU":
-        return "EU";
-      case "NA":
-        return "NA";
-      default:
-        return "Unknown";
-    }
-  })(region);
-
   return (
     <motion.div
       variants={{
@@ -170,7 +159,7 @@ const Server = (props: ServerProps) => {
             </p>
           )} */}
           <p className="players">
-            {(props.server.partyIdsAssinged || []).length}
+            {(props.server.party_ids_assinged || []).length}
             <small>/100</small>
           </p>
         </div>
@@ -183,14 +172,14 @@ const Server = (props: ServerProps) => {
               ((props.server.status || 0) === 2 ? "closed" : "")
             }
             style={{
-              width: `${(props.server.partyIdsAssinged || []).length}%`,
+              width: `${(props.server.party_ids_assinged || []).length}%`,
             }}
           />
         </div>
       </div>
       <div className="row">
         <span className="serverId">
-          <b></b> {regionNiceText} • {props.server.id}
+          <b></b> {region} • {props.server.id}
         </span>
       </div>
     </motion.div>

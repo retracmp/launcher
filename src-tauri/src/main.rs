@@ -170,7 +170,7 @@ fn main() {
       // #[cfg(target_os = "windows")]
       // apply_blur(&window, Some((18, 18, 18, 125))).expect("Unsupported platform! 'apply_blur' is only supported on Windows");
 
-      tauri_plugin_deep_link::register("ezfn", move |request| {
+      tauri_plugin_deep_link::register("snow", move |request| {
         let re = Regex::new(r"snow://auth:([^/]+)").unwrap();
         let re2 = Regex::new(r"snow://auth_onboard:([^/]+)").unwrap();
 

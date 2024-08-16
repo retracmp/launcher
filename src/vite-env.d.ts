@@ -110,7 +110,7 @@ type Server = {
   id: string;
   bucket_id: string;
   status: ServerStatus;
-  partyIdsAssinged: string[];
+  party_ids_assinged: string[];
   playercount: number;
 };
 
