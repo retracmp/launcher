@@ -67,7 +67,7 @@ const PlaySnow = () => {
 
   const startLocal = async () => {
     const entry = getCurrentEntry();
-    entry && experienceSnowDev(entry.path, username);
+    entry && experienceSnowDev(entry.path, username, token);
   };
 
   const startPublic = async () => {
@@ -81,6 +81,7 @@ const PlaySnow = () => {
       experienceSnow(
         entry.path,
         codeResponse.data,
+        token,
         local,
         eor,
         dpe,

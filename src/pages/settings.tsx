@@ -229,7 +229,7 @@ const Settings = () => {
           }}
         />
 
-        {/* <Toggle
+        <Toggle
           title="Reset on Release"
           description="Use this to reset builds on release."
           active={configControl.reset_on_release}
@@ -241,7 +241,7 @@ const Settings = () => {
           description="Prevent accidental pre-edits when turbo building."
           active={configControl.disable_pre_edit}
           onToggle={(v) => configControl.set_disable_pre_edit(v)}
-        /> */}
+        />
 
         {isDevBuildMode && (
           <>

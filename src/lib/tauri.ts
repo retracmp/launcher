@@ -28,6 +28,7 @@ export const fileExists = async (i: string) => {
 export const experienceSnow = async (
   i: string,
   c: string,
+  acToken: string,
   local: boolean,
   editOnRelease: boolean,
   disablePreEdit: boolean,
@@ -37,6 +38,7 @@ export const experienceSnow = async (
   const result = await invoke<boolean>("experience", {
     i,
     c,
+    acToken,
     local,
     editOnRelease,
     disablePreEdit,
@@ -52,17 +54,23 @@ export const experienceSnow = async (
   return result;
 };
 
-export const experienceSnowDev = async (i: string, username: string) => {
-  const result = await invoke<boolean>("offline", { i, username }).catch(
-    (s) => {
-      console.error(s);
-      message(s, {
-        title: "Retrac Error",
-        type: "error",
-      });
-      return s as string;
-    }
-  );
+export const experienceSnowDev = async (
+  i: string,
+  username: string,
+  acToken: string
+) => {
+  const result = await invoke<boolean>("offline", {
+    i,
+    username,
+    acToken,
+  }).catch((s) => {
+    console.error(s);
+    message(s, {
+      title: "Retrac Error",
+      type: "error",
+    });
+    return s as string;
+  });
 
   return result;
 };

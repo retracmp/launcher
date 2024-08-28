@@ -42,6 +42,7 @@ export const endpoints = {
   GET_SHOP: "/admin/shop/today",
   GET_COSMETICS: "/snow/cosmetics",
   CONTENT_PAGES: "/content/api/pages/fortnite-game",
+  GET_ADVERT_LINK: "/adverts",
 };
 
 const client = {

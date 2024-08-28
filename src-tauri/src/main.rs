@@ -35,7 +35,7 @@ async fn size(i: &str) -> Result<u64, String> {
 }
 
 #[tauri::command]
-async fn experience(i: String, c: &str, _local: bool, edit_on_release: bool, disable_pre_edit: bool, version: i32, app: AppHandle) -> Result<bool, String> {
+async fn experience(i: String, c: &str, ac_token: &str, _local: bool, edit_on_release: bool, disable_pre_edit: bool, version: i32, app: AppHandle) -> Result<bool, String> {
   let window = app.get_window("main").unwrap();
 
   carter::kill();
@@ -95,7 +95,7 @@ async fn experience(i: String, c: &str, _local: bool, edit_on_release: bool, dis
     return Err("Could not find EAC setup".to_string());
   }
 
-  match carter::launch_eac(path.to_str().unwrap(), &format!("-AUTH_LOGIN= -AUTH_PASSWORD={} -AUTH_TYPE=exchangecode", c), edit_on_release, disable_pre_edit).await {
+  match carter::launch_eac(path.to_str().unwrap(), &format!("-AUTH_LOGIN= -AUTH_PASSWORD={} -AUTH_TYPE=exchangecode", c), ac_token, edit_on_release, disable_pre_edit).await {
     Ok(_) => Ok(true),
     Err(e) => {
       return Err("Could not launch EAC for reason: ".to_string() + e.to_string().as_str());
@@ -104,7 +104,10 @@ async fn experience(i: String, c: &str, _local: bool, edit_on_release: bool, dis
 }
 
 #[tauri::command]
-async fn offline(i: String, username: &str) -> Result<bool, String> {
+async fn offline(i: String, username: &str, ac_token: &str) -> Result<bool, String> {
+  carter::kill();
+  std::thread::sleep(std::time::Duration::from_millis(1000));
+
   let path = PathBuf::from(i);
 
   let res = carter::launch_real_launcher(path.clone().to_str().unwrap()).await;
@@ -113,7 +116,7 @@ async fn offline(i: String, username: &str) -> Result<bool, String> {
     return Err("".to_string() + res.unwrap_err().as_str());
   }
 
-  match carter::launch_game(path.to_str().unwrap(), &format!("-AUTH_LOGIN={}@retrac.site -AUTH_PASSWORD=snowsOnTop -AUTH_TYPE=epic", username), false, false).await {
+  match carter::launch_game(path.to_str().unwrap(), &format!("-AUTH_LOGIN={}@retrac.site -AUTH_PASSWORD=snowsOnTop -AUTH_TYPE=epic", username), ac_token, false, false).await {
     Ok(_) => Ok(true),
     Err(e) => {
       Err("Could not launch the game for reason: ".to_string() + e.to_string().as_str())

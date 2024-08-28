@@ -259,10 +259,40 @@ pub async fn launch_real_launcher(root: &str) -> Result<bool, String> {
 pub async fn launch_game(
   path: &str,
   code: &str,
+  ac_token: &str,
   use_edit_on_release: bool,
   use_disable_pre_edits: bool,
 ) -> Result<bool, String> {
   let base = std::path::PathBuf::from(path);
+
+  let mut eac_setup = base.clone();
+  eac_setup.push("EasyAntiCheat\\EasyAntiCheat_EOS_Setup.exe");
+  let eac_setup_args = vec![
+    "install",
+    "b2504259773b40e3a818f820e31979ca"
+  ];
+  let eac_setup_cmd = std::process::Command::new(eac_setup)
+    .creation_flags(CREATE_NO_WINDOW)
+    .args(eac_setup_args)
+    .spawn();
+  if eac_setup_cmd.is_err() {
+    return Err("Failed to launch EAC setup".to_string());
+  }
+
+  let mut fort_ac_path = base.clone();
+  fort_ac_path.push("FortniteGame\\Binaries\\Win64\\FortniteClient-Win64-Shipping_EAC.exe");
+  let mut fort_ac_cwd = base.clone();
+  fort_ac_cwd.push("FortniteGame\\Binaries\\Win64");
+  let fortnite_ac_process = std::process::Command::new(fort_ac_path)
+    .creation_flags(CREATE_NO_WINDOW)
+    .current_dir(fort_ac_cwd)
+    .spawn();
+  if fortnite_ac_process.is_err() {
+    return Err("Failed to launch FortniteClient-Win64-Shipping_EAC.exe".to_string());
+  }
+  suspend_process(fortnite_ac_process.unwrap().id());
+
+  let env =  format!("-actoken={}", ac_token);
   let mut fort_args = vec![
     "-epicapp=Fortnite",
     "-epicenv=Prod",
@@ -273,6 +303,7 @@ pub async fn launch_game(
     "-fltoken=hchc0906bb1bg83c3934fa31",
     "-skippatchcheck",
     "-noeac",
+    env.as_str(),
   ];
 
   if use_edit_on_release {
@@ -302,6 +333,7 @@ pub async fn launch_game(
 pub async fn launch_eac(
   path: &str, 
   code: &str,
+  ac_token: &str,
   use_edit_on_release: bool,
   use_disable_pre_edits: bool,
 ) -> Result<bool, String>{
@@ -352,20 +384,18 @@ pub async fn launch_eac(
     return Err("Could not find EAC binary".to_string());
   }
 
-  let mut eor = "";
-  if use_edit_on_release {
-    eor = "ROR";
-  }
+  // let mut eor = "";
+  // if use_edit_on_release {
+  //   eor = "ROR";
+  // }
 
-  let mut dpe = "";
-  if use_disable_pre_edits {
-    dpe = "DPE";
-  }
-
-  let env = format!("-epicenv=Prod##{}##{}", eor, dpe);
-  let fort_args = vec![
+  // let mut dpe = "";
+  // if use_disable_pre_edits {
+  //   dpe = "DPE";
+  // }
+  let env2 = format!("-ac-token={}", ac_token);
+  let mut fort_args = vec![
     "-epicapp=Fortnite",
-    env.as_str(),
     "-epiclocale=en-us",
     "-epicportal",
     "-nobe",
@@ -374,7 +404,16 @@ pub async fn launch_eac(
     "-caldera=eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50X2lkIjoiYmU5ZGE1YzJmYmVhNDQwN2IyZjQwZWJhYWQ4NTlhZDQiLCJnZW5lcmF0ZWQiOjE2Mzg3MTcyNzgsImNhbGRlcmFHdWlkIjoiMzgxMGI4NjMtMmE2NS00NDU3LTliNTgtNGRhYjNiNDgyYTg2IiwiYWNQcm92aWRlciI6IkVhc3lBbnRpQ2hlYXQiLCJub3RlcyI6IiIsImZhbGxiYWNrIjpmYWxzZX0.VAWQB67RTxhiWOxx7DBjnzDnXyyEnX7OljJm-j2d88G_WgwQ9wrE6lwMEHZHjBd1ISJdUO1UVUqkfLdU5nofBQ",
     "-skippatchcheck",
     "-noeac",
+    env2.as_str(),
   ];
+
+  if use_edit_on_release {
+    fort_args.push("-instantreset");
+  }
+
+  if use_disable_pre_edits {
+    fort_args.push("-disablepreedit");
+  }
 
   let fort_cmd = std::process::Command::new(eac_binary)
     .creation_flags(CREATE_NO_WINDOW)

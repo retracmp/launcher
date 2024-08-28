@@ -64,5 +64,16 @@
 }
 
 .advert .body button:active {
-  transform: scale(0.98);
+  scale: 0.95;
+}
+
+.advert .body button:disabled {
+  background-color: #00000010;
+  color: #ffffff96;
+  cursor: not-allowed;
+  scale: 1 !important;
+}
+
+.advert .body button:disabled:hover {
+  scale: 1 !important;
 }

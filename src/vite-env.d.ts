@@ -52,7 +52,7 @@ type User = {
     Stats: Record<int, Stat>;
     State: {
       Packages: string[];
-      ClaimedPackages: string[];
+      ClaimedPackages: Record<string, string>;
     };
   };
   Profiles: {
