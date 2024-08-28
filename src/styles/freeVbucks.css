@@ -1,0 +1,68 @@
+.advert {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 1rem;
+  border-radius: 0.35rem;
+  background-color: #ffffff10;
+  backdrop-filter: blur(0.5rem);
+  background-image: linear-gradient(30deg, #e877f7, #e13a64);
+  overflow: hidden;
+}
+
+.advert > img {
+  position: absolute;
+  top: -2rem;
+  right: -2rem;
+  width: 10rem;
+}
+
+.advert .header {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  z-index: 3;
+  padding-right: 8rem;
+}
+
+.advert .header > span {
+  text-transform: uppercase;
+  font-weight: 700;
+  opacity: 0.75;
+  font-size: 0.85rem;
+}
+
+.advert .header > h2 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.advert .body {
+  display: flex;
+  flex-direction: row;
+  padding-top: 0.5rem;
+  flex: 1;
+  /* background-color: red; */
+}
+
+.advert .body button {
+  width: 100%;
+  margin-top: auto;
+  height: min-content;
+  border: none;
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  outline: none;
+  background-color: #00000020;
+  backdrop-filter: blur(0.25rem);
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+  transition: scale 200ms;
+}
+
+.advert .body button:active {
+  transform: scale(0.98);
+}

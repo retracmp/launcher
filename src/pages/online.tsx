@@ -8,6 +8,7 @@ import Book from "src/components/book";
 import DownloaderArea from "src/components/downloader";
 import Player from "src/components/player";
 import ShopPreview from "src/components/smallShop";
+import FreeVbucks from "src/components/freeVbucks";
 
 const Online = () => {
   const [is_downloading] = useStates((s) => [s.is_downloading]);
@@ -21,7 +22,7 @@ const Online = () => {
         <div className="duo">
           <div className="colmax">
             <Book />
-            <div className="fil_empty_space"></div>
+            <FreeVbucks />
           </div>
           <ShopPreview />
         </div>

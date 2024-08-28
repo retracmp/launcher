@@ -117,18 +117,18 @@ html {
   background: transparent;
   background-color: transparent;
   overflow: hidden;
-  background-color: var(--background);
-  background-image: linear-gradient(
-    var(--BG_ROTATE),
-    var(--foreground) 5rem,
-    var(--COLOR)
-  ) !important;
 }
 
 #root {
   color: var(--active);
   overflow: hidden;
   border-radius: 0.5rem;
+  background-color: var(--background);
+  background-image: linear-gradient(
+    var(--BG_ROTATE),
+    var(--foreground) 5rem,
+    var(--COLOR)
+  ) !important;
 }
 
 a[href] {

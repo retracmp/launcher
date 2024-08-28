@@ -127,7 +127,9 @@ const Server = (props: ServerProps) => {
         return "Trios";
       case "playlist_vamp_solo":
         return "Lategame Solos";
-      case "showdown":
+      case "playlist_showdownalt_solo":
+        return "Lategame Arena";
+      case "playlist_showdownalt_solo_retrac":
         return "Arena";
       default:
         return "Unknown";
