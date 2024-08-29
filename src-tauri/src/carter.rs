@@ -292,7 +292,7 @@ pub async fn launch_game(
   }
   suspend_process(fortnite_ac_process.unwrap().id());
 
-  let env =  format!("-actoken={}", ac_token);
+  let env = format!("-actoken={}", ac_token);
   let mut fort_args = vec![
     "-epicapp=Fortnite",
     "-epicenv=Prod",
@@ -393,7 +393,7 @@ pub async fn launch_eac(
   // if use_disable_pre_edits {
   //   dpe = "DPE";
   // }
-  let env2 = format!("-ac-token={}", ac_token);
+  let env2 = format!("-actoken={}", ac_token);
   let mut fort_args = vec![
     "-epicapp=Fortnite",
     "-epiclocale=en-us",
