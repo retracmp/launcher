@@ -20,9 +20,22 @@ const FreeVbucks = () => {
   const condition = isLoading || error;
   const player = condition ? null : playerReal;
 
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+  useEffect(() => {
+    const test = async () => {
+      const link = await advert_link(account.access_token);
+      if (link.ok) {
+        setIsButtonDisabled(false);
+      } else {
+        setIsButtonDisabled(true);
+      }
+    };
+
+    test();
+  }, []);
+
   const handleClaimVbucks = async () => {
     const link = await advert_link(account.access_token);
-    console.log(link);
     if (link.ok) {
       open(link.data);
     }
@@ -64,9 +77,13 @@ const FreeVbucks = () => {
         <h2>CLAIM YOUR FREE DAILY V-BUCKS</h2>
       </div>
       <div className="body" onClick={handleClaimVbucks}>
-        <button disabled={disableButton}>
-          {disableButton ? `Claim in ${timeToWaitNiceText}` : "Claim Now"}
-        </button>
+        {isButtonDisabled ? (
+          <button disabled={disableButton}>
+            {disableButton ? `Claim in ${timeToWaitNiceText}` : "Claim Now"}
+          </button>
+        ) : (
+          <button disabled={true}>Currently disabled.</button>
+        )}
       </div>
     </div>
   );

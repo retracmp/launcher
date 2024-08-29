@@ -93,7 +93,7 @@ const PlaySnow = () => {
     if (!fortniteEntry) return "Invalid Installation";
     if (isFortniteRunning && oneSession) return "Fortnite is running";
     if (!username && type) return "Invalid Credentials";
-    if (!type && !pakInstalled) return "Custom Pak Missing";
+    if (!type && !pakInstalled) return "DOWNLOAD LATEST UPDATE";
     if (!launcher) return "Checking Version";
     if (launcherNum > 109) return "Update Retrac Launcher";
     if (type) return "Local Backend";
