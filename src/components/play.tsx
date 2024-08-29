@@ -48,7 +48,7 @@ const PlaySnow = () => {
     !fortniteEntry ||
     (!username && type) ||
     (!type && !pakInstalled) ||
-    launcherNum > 109;
+    launcherNum > 112;
 
   const token = useUserControl((s) => s.access_token);
 
@@ -95,7 +95,7 @@ const PlaySnow = () => {
     if (!username && type) return "Invalid Credentials";
     if (!type && !pakInstalled) return "DOWNLOAD LATEST UPDATE";
     if (!launcher) return "Checking Version";
-    if (launcherNum > 109) return "Update Retrac Launcher";
+    if (launcherNum > 112) return "Update Retrac Launcher";
     if (type) return "Local Backend";
     return "Launch Retrac";
   };
