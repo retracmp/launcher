@@ -14,6 +14,7 @@ const Player_SEASON14 = () => {
     (l) => l.ID === player?.Profiles.athena.Attributes["loadouts"][0]
   );
   const character = player?.Profiles.athena.Items[loadout?.CharacterID || ""];
+  console.log(loadout, character);
 
   return (
     <motion.div
@@ -23,15 +24,27 @@ const Player_SEASON14 = () => {
       transition={{ duration: 0.2 }}
       className="player"
     >
-      <div
-        className="avatar"
-        style={{
-          backgroundImage: `url(https://fortnite-api.com/images/cosmetics/br/${character?.Template.replace(
-            "_Retrac",
-            ""
-          )}/icon.png)`,
-        }}
-      />
+      {character?.Template ? (
+        <div
+          className="avatar"
+          style={{
+            backgroundImage: `url(https://fortnite-api.com/images/cosmetics/br/${character?.Template.replace(
+              "_Retrac",
+              ""
+            )}/icon.png)`,
+          }}
+        />
+      ) : (
+        <div
+          className="avatar unknown"
+          style={{
+            backgroundImage: `url(/mark.png)`,
+            height: "100%",
+            marginBottom: "0rem",
+            marginLeft: "0.5rem",
+          }}
+        />
+      )}
       <div className="information">
         <span>Welcome</span>
         <span className="name">{player?.Account.DisplayName || "Player"}</span>

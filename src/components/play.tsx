@@ -8,6 +8,7 @@ import { queryLauncherVersion } from "src/external/query";
 import { experienceSnow, experienceSnowDev } from "src/lib/tauri";
 import { hasPakInstalled } from "src/lib/import";
 import { motion } from "framer-motion";
+import { getVersion } from "@tauri-apps/api/app";
 import client from "src/external/client";
 
 import { FaLock } from "react-icons/fa6";
@@ -37,9 +38,17 @@ const PlaySnow = () => {
   });
 
   // remove . and turn int oa 3 digit number
-  const launcherNum = parseInt(
-    launcher?.current_version.replace(/\./g, "") || "0"
-  );
+  const launcherNum = parseInt(launcher?.current_version.split(".")[2] || "0");
+
+  const [version, setVersion] = useState("1.0.13");
+  useEffect(() => {
+    (async () => {
+      const v = await getVersion();
+      setVersion(v);
+    })();
+  }, []);
+  const myVersionNum = parseInt(version.split(".")[2] || "0");
+  console.log(launcherNum, myVersionNum);
 
   const fortniteEntry = getCurrentEntry();
   const isFortniteRunning = currentFortniteProcess > 0;
@@ -48,7 +57,7 @@ const PlaySnow = () => {
     !fortniteEntry ||
     (!username && type) ||
     (!type && !pakInstalled) ||
-    launcherNum > 112;
+    launcherNum > myVersionNum;
 
   const token = useUserControl((s) => s.access_token);
 
@@ -95,7 +104,7 @@ const PlaySnow = () => {
     if (!username && type) return "Invalid Credentials";
     if (!type && !pakInstalled) return "DOWNLOAD LATEST UPDATE";
     if (!launcher) return "Checking Version";
-    if (launcherNum > 112) return "Update Retrac Launcher";
+    if (launcherNum > myVersionNum) return "Update Retrac Launcher";
     if (type) return "Local Backend";
     return "Launch Retrac";
   };

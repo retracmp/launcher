@@ -146,3 +146,12 @@
   width: 100%;
   height: 100%;
 }
+
+.versioninfo {
+  /* margin-top: auto; */
+  position: absolute;
+  left: 8.2rem;
+  top: 1.6rem;
+  color: #ffffff99;
+  font-size: 0.7rem;
+}

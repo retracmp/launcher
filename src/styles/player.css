@@ -24,6 +24,10 @@
   transform: scaleX(-1);
 }
 
+.player .avatar.unknown {
+  transform: scaleX(1);
+}
+
 .player .information {
   display: flex;
   flex-direction: column;

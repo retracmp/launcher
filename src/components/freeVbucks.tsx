@@ -20,20 +20,6 @@ const FreeVbucks = () => {
   const condition = isLoading || error;
   const player = condition ? null : playerReal;
 
-  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
-  useEffect(() => {
-    const test = async () => {
-      const link = await advert_link(account.access_token);
-      if (link.ok) {
-        setIsButtonDisabled(false);
-      } else {
-        setIsButtonDisabled(true);
-      }
-    };
-
-    test();
-  }, []);
-
   const handleClaimVbucks = async () => {
     const link = await advert_link(account.access_token);
     if (link.ok) {
@@ -47,23 +33,40 @@ const FreeVbucks = () => {
   const now = new Date();
   const disableButton = now.getTime() - parsed.getTime() < 24 * 60 * 60 * 1000;
 
-  const [timeToWaitNiceText, setTimeToWaitNiceText] = useState<string>(
-    new Date(24 * 60 * 60 * 1000 - (now.getTime() - parsed.getTime()))
-      .toISOString()
-      .slice(11, 19)
+  // the nice text is how long until lastClaimTime + 24 hours
+  // every second, we update the timeToWaitNiceText
+  // it should be in the format of "1h 30m 20s"
+
+  let defaultTimeToWaitNiceText = "24h 0m 0s";
+  const diff = 24 * 60 * 60 * 1000 - (now.getTime() - parsed.getTime());
+  if (diff >= 0) {
+    const hours = Math.floor(diff / (60 * 60 * 1000));
+    const minutes = Math.floor((diff % (60 * 60 * 1000)) / (60 * 1000));
+    const seconds = Math.floor((diff % (60 * 1000)) / 1000);
+    defaultTimeToWaitNiceText = `${hours}h ${minutes}m ${seconds}s`;
+  }
+  const [timeToWaitNiceText, setTimeToWaitNiceText] = useState(
+    defaultTimeToWaitNiceText
   );
 
   useEffect(() => {
     const interval = setInterval(() => {
-      const now = new Date();
-      const time = new Date(
-        24 * 60 * 60 * 1000 - (now.getTime() - parsed.getTime())
-      );
-      setTimeToWaitNiceText(time.toISOString().slice(11, 19));
+      const diff = 24 * 60 * 60 * 1000 - (now.getTime() - parsed.getTime());
+      if (diff < 0) {
+        setTimeToWaitNiceText(defaultTimeToWaitNiceText);
+        return;
+      }
+
+      const hours = Math.floor(diff / (60 * 60 * 1000));
+      const minutes = Math.floor((diff % (60 * 60 * 1000)) / (60 * 1000));
+      const seconds = Math.floor((diff % (60 * 1000)) / 1000);
+
+      setTimeToWaitNiceText(`${hours}h ${minutes}m ${seconds}s`);
     }, 1000);
+    // func();
 
     return () => clearInterval(interval);
-  }, []);
+  }, [parsed, now]);
 
   if (condition) {
     return null;
@@ -77,13 +80,9 @@ const FreeVbucks = () => {
         <h2>CLAIM YOUR FREE DAILY V-BUCKS</h2>
       </div>
       <div className="body" onClick={handleClaimVbucks}>
-        {isButtonDisabled ? (
-          <button disabled={disableButton}>
-            {disableButton ? `Claim in ${timeToWaitNiceText}` : "Claim Now"}
-          </button>
-        ) : (
-          <button disabled={true}>Currently disabled.</button>
-        )}
+        <button disabled={disableButton}>
+          {disableButton ? `Claim in ${timeToWaitNiceText}` : "Claim Now"}
+        </button>
       </div>
     </div>
   );

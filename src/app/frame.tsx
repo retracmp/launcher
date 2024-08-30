@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useStates } from "src/state/state";
 import { useConfigControl } from "src/state/config";
@@ -7,6 +7,7 @@ import { queryPerson, queryStats } from "src/external/query";
 import { Outlet } from "@tanstack/react-router";
 import { appWindow } from "@tauri-apps/api/window";
 import { AnimatePresence } from "framer-motion";
+import { getVersion } from "@tauri-apps/api/app";
 import { hasPakInstalled } from "src/lib/import";
 
 import { HiMinusSm, HiX } from "react-icons/hi";
@@ -72,6 +73,14 @@ const Frame = () => {
     })();
   }, [libraryControl.entries]);
 
+  const [version, setVersion] = useState("1.0.13");
+  useEffect(() => {
+    (async () => {
+      const v = await getVersion();
+      setVersion(v);
+    })();
+  }, []);
+
   const bestRole = player?.Account.State.Packages.reduce((acc, curr) => {
     if (ROLE_TIERS.indexOf(curr) > ROLE_TIERS.indexOf(acc)) {
       return curr;
@@ -87,6 +96,7 @@ const Frame = () => {
           <span data-tauri-drag-region className="tauriFrameTitle">
             RETRAC
           </span>
+          <p className="versioninfo">V{version}</p>
           <s />
           {!config.drawer_open && (
             <button
