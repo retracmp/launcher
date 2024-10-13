@@ -284,3 +284,11 @@
   width: 100%;
   min-height: max-content;
 }
+
+p.allowed {
+  color: #d2ecec;
+}
+
+p.notAllowed {
+  color: #e98080;
+}

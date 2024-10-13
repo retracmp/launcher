@@ -216,7 +216,19 @@ const Settings = () => {
           <button className="default setting" onClick={handleImportBuild}>
             Set Fortnite Directory
           </button>
-          {currentEntry && <p>{currentEntry.path}</p>}
+          <div>
+            {currentEntry && (
+              <p
+                className={
+                  currentEntry.releaseVersion === 14 ? "allowed" : "notAllowed"
+                }
+              >
+                Retrac Season {currentEntry.releaseVersion}
+                {currentEntry.releaseVersion != 14 && " (Wrong Version)"}
+              </p>
+            )}
+            {currentEntry && <p>{currentEntry.path}</p>}
+          </div>
         </div>
 
         <Toggle

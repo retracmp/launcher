@@ -25,6 +25,7 @@ const versionLookup = new Map<string, string>([
   ["cd50eaa63bed9b6f6990cfd33f8f6f8c0b688c2f5d13b8c7e0739fcb306aed8e", "11.31"],
   ["78f00934fa00f0c184e6b0a7219048a17066f6bba6a13d4408735928f295cdfe", "12.41"],
   ["0d5a49a5b7f01ac2d8bdaa76b9beceb53997ed05d8b9d1e936db6470a15714e9", "14.30"],
+  ["fa6d1bd8cf09219753285a8e3e79b78156c7ae792fbb2537a9dca1c3043bd178", "14.40"],
   ["f0ea139dd7be93da7a36f5f91bcea9f84f914709e9cc3253726736f8d7b21133", "15.30"],
 ]);
 
@@ -74,6 +75,7 @@ const importBuild = async (path: string) => {
 
   const version = versionLookup.get(hash);
   if (!version) {
+    console.log("not found ", hash);
     return message(
       "Retrac could not determine the version of the build, please message our support team on discord!",
       "Retrac Error"

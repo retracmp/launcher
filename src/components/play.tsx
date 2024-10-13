@@ -54,6 +54,7 @@ const PlaySnow = () => {
   const isFortniteRunning = currentFortniteProcess > 0;
   const disableButton =
     (isFortniteRunning && oneSession) ||
+    fortniteEntry?.releaseVersion != 14 ||
     !fortniteEntry ||
     (!username && type) ||
     (!type && !pakInstalled) ||
@@ -100,6 +101,7 @@ const PlaySnow = () => {
 
   const chooseLabel = (): string => {
     if (!fortniteEntry) return "Invalid Installation";
+    if (fortniteEntry.releaseVersion != 14) return "Wrong Game Version";
     if (isFortniteRunning && oneSession) return "Fortnite is running";
     if (!username && type) return "Invalid Credentials";
     if (!type && !pakInstalled) return "DOWNLOAD LATEST UPDATE";

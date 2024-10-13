@@ -384,15 +384,6 @@ pub async fn launch_eac(
     return Err("Could not find EAC binary".to_string());
   }
 
-  // let mut eor = "";
-  // if use_edit_on_release {
-  //   eor = "ROR";
-  // }
-
-  // let mut dpe = "";
-  // if use_disable_pre_edits {
-  //   dpe = "DPE";
-  // }
   let env2 = format!("-actoken={}", ac_token);
   let mut fort_args = vec![
     "-epicapp=Fortnite",
@@ -415,7 +406,7 @@ pub async fn launch_eac(
     fort_args.push("-disablepreedit");
   }
 
-  let fort_cmd = std::process::Command::new(eac_binary)
+  let fort_cmd = std::process::Command::new(fort_binary)
     .creation_flags(CREATE_NO_WINDOW)
     .args(fort_args)
     .args(code.split(" "))
