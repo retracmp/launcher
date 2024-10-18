@@ -32,7 +32,8 @@ export const experienceSnow = async (
   local: boolean,
   editOnRelease: boolean,
   disablePreEdit: boolean,
-  version: int
+  version: int,
+  launchArgs: string
 ) => {
   await closeSnow();
   const result = await invoke<boolean>("experience", {
@@ -43,6 +44,7 @@ export const experienceSnow = async (
     editOnRelease,
     disablePreEdit,
     version,
+    launchArgs,
   }).catch((s) => {
     console.error(s);
     message(s, {
@@ -57,12 +59,14 @@ export const experienceSnow = async (
 export const experienceSnowDev = async (
   i: string,
   username: string,
-  acToken: string
+  acToken: string,
+  launchArgs: string
 ) => {
   const result = await invoke<boolean>("offline", {
     i,
     username,
     acToken,
+    launchArgs,
   }).catch((s) => {
     console.error(s);
     message(s, {

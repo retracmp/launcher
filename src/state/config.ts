@@ -39,6 +39,9 @@ type ConfigState = {
 
   always_on_top: boolean;
   set_always_on_top: (always_on_top: boolean) => void;
+
+  custom_launch_args: string;
+  set_custom_launch_args: (custom_launch_args: string) => void;
 };
 
 export const useConfigControl = create<ConfigState>()(
@@ -69,6 +72,9 @@ export const useConfigControl = create<ConfigState>()(
       set_size: (size: point) => set({ size }),
       always_on_top: false,
       set_always_on_top: (always_on_top: boolean) => set({ always_on_top }),
+      custom_launch_args: "",
+      set_custom_launch_args: (custom_launch_args: string) =>
+        set({ custom_launch_args }),
     }),
     {
       name: "config.control",

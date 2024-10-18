@@ -16,16 +16,16 @@ import { FaLock } from "react-icons/fa6";
 const PlaySnow = () => {
   const [currentFortniteProcess, set] = useState<number>(0);
   const [add, remove] = useEvents((s) => [s.subscribe, s.unsubscribe]);
-  const [oneSession, username, type, local, eor, dpe] = useConfigControl(
-    (s) => [
+  const [oneSession, username, type, local, eor, dpe, launchargs] =
+    useConfigControl((s) => [
       s.one_session,
       s.raw_credentials,
       s.use_passwordless,
       s.use_localhost,
       s.reset_on_release,
       s.disable_pre_edit,
-    ]
-  );
+      s.custom_launch_args,
+    ]);
   const [getCurrentEntry, pakInstalled, setPak] = useLibraryControl((s) => [
     s.getCurrentEntry,
     s.pakValid,
@@ -77,7 +77,7 @@ const PlaySnow = () => {
 
   const startLocal = async () => {
     const entry = getCurrentEntry();
-    entry && experienceSnowDev(entry.path, username, token);
+    entry && experienceSnowDev(entry.path, username, token, launchargs);
   };
 
   const startPublic = async () => {
@@ -95,7 +95,8 @@ const PlaySnow = () => {
         local,
         eor,
         dpe,
-        entry.releaseVersion
+        entry.releaseVersion,
+        launchargs
       );
   };
 

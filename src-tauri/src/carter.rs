@@ -236,7 +236,7 @@ pub async fn launch_real_launcher(root: &str) -> Result<bool, String> {
 
   kill_epic();
   let cmd = std::process::Command::new(resource_path.clone())
-    .creation_flags(CREATE_NO_WINDOW)
+    .creation_flags(CREATE_NO_WINDOW | 0x00000004)
     .current_dir(cwd)
     .spawn();
 
@@ -262,35 +262,35 @@ pub async fn launch_game(
   ac_token: &str,
   use_edit_on_release: bool,
   use_disable_pre_edits: bool,
+  launch_args: &str,
 ) -> Result<bool, String> {
   let base = std::path::PathBuf::from(path);
 
-  let mut eac_setup = base.clone();
-  eac_setup.push("EasyAntiCheat\\EasyAntiCheat_EOS_Setup.exe");
-  let eac_setup_args = vec![
-    "install",
-    "b2504259773b40e3a818f820e31979ca"
-  ];
-  let eac_setup_cmd = std::process::Command::new(eac_setup)
-    .creation_flags(CREATE_NO_WINDOW)
-    .args(eac_setup_args)
-    .spawn();
-  if eac_setup_cmd.is_err() {
-    return Err("Failed to launch EAC setup".to_string());
-  }
+  // let mut eac_setup = base.clone();
+  // eac_setup.push("EasyAntiCheat\\EasyAntiCheat_EOS_Setup.exe");
+  // let eac_setup_args = vec![
+  //   "install",
+  //   "b2504259773b40e3a818f820e31979ca"
+  // ];
+  // let eac_setup_cmd = std::process::Command::new(eac_setup)
+  //   .creation_flags(CREATE_NO_WINDOW)
+  //   .args(eac_setup_args)
+  //   .spawn();
+  // if eac_setup_cmd.is_err() {
+  //   return Err("Failed to launch EAC setup".to_string());
+  // }
 
   let mut fort_ac_path = base.clone();
   fort_ac_path.push("FortniteGame\\Binaries\\Win64\\FortniteClient-Win64-Shipping_EAC.exe");
   let mut fort_ac_cwd = base.clone();
   fort_ac_cwd.push("FortniteGame\\Binaries\\Win64");
   let fortnite_ac_process = std::process::Command::new(fort_ac_path)
-    .creation_flags(CREATE_NO_WINDOW)
+    .creation_flags(CREATE_NO_WINDOW | 0x00000004)
     .current_dir(fort_ac_cwd)
     .spawn();
   if fortnite_ac_process.is_err() {
     return Err("Failed to launch FortniteClient-Win64-Shipping_EAC.exe".to_string());
   }
-  suspend_process(fortnite_ac_process.unwrap().id());
 
   let env = format!("-actoken={}", ac_token);
   let mut fort_args = vec![
@@ -304,6 +304,7 @@ pub async fn launch_game(
     "-skippatchcheck",
     "-noeac",
     env.as_str(),
+    launch_args,
   ];
 
   if use_edit_on_release {
@@ -336,6 +337,7 @@ pub async fn launch_eac(
   ac_token: &str,
   use_edit_on_release: bool,
   use_disable_pre_edits: bool,
+  launch_args: &str,
 ) -> Result<bool, String>{
   let base = std::path::PathBuf::from(path);
 
@@ -346,7 +348,7 @@ pub async fn launch_eac(
     "b2504259773b40e3a818f820e31979ca"
   ];
   let eac_setup_cmd = std::process::Command::new(eac_setup)
-    .creation_flags(CREATE_NO_WINDOW)
+    .creation_flags(CREATE_NO_WINDOW )
     .args(eac_setup_args)
     .spawn();
   if eac_setup_cmd.is_err() {
@@ -358,13 +360,12 @@ pub async fn launch_eac(
   let mut fort_ac_cwd = base.clone();
   fort_ac_cwd.push("FortniteGame\\Binaries\\Win64");
   let fortnite_ac_process = std::process::Command::new(fort_ac_path)
-    .creation_flags(CREATE_NO_WINDOW)
+    .creation_flags(CREATE_NO_WINDOW | 0x00000004)
     .current_dir(fort_ac_cwd)
     .spawn();
   if fortnite_ac_process.is_err() {
     return Err("Failed to launch FortniteClient-Win64-Shipping_EAC.exe".to_string());
   }
-  suspend_process(fortnite_ac_process.unwrap().id());
 
   let res = launch_real_launcher(base.clone().to_str().unwrap()).await;
   if res.is_err() {
@@ -396,6 +397,7 @@ pub async fn launch_eac(
     "-skippatchcheck",
     "-noeac",
     env2.as_str(),
+    launch_args,
   ];
 
   if use_edit_on_release {

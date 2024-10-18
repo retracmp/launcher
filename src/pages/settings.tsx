@@ -275,6 +275,14 @@ const Settings = () => {
                 }
               }}
             />
+
+            <Input
+              title="Launch Args"
+              title_description="Custom launch arguments for the game."
+              description="-RetracKey=1234"
+              value={configControl.custom_launch_args}
+              onChange={(v) => configControl.set_custom_launch_args(v)}
+            />
           </>
         )}
 
