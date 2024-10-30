@@ -4,12 +4,13 @@
   gap: 0.5rem;
   padding: 0rem 1rem;
   padding-bottom: 1rem;
+  margin-top: 0.5rem;
   flex: 1;
   user-select: none;
 }
 
 .onboardContainer header {
-  width: 22rem;
+  width: 23rem;
   margin: 0 auto;
   background-color: rgba(206, 206, 206, 0.055);
   padding: 1rem;
@@ -32,7 +33,7 @@
 }
 
 button.wide {
-  width: 22rem;
+  width: 23rem;
   margin: 0 auto;
   background-color: #cecece0e;
   border-radius: 0.35rem;
@@ -50,7 +51,7 @@ button.wide:hover {
 }
 
 div.area {
-  min-width: 22rem;
+  min-width: 23rem;
   height: 3rem;
   margin: 0 auto;
   display: flex;
@@ -60,6 +61,7 @@ div.area {
 }
 
 button.cube {
+  position: relative;
   width: 100%;
   margin: 0 auto;
   background-color: #cecece0e;
@@ -85,4 +87,31 @@ button.cube:disabled {
   background-color: #cecece0e;
   color: var(--semi-active);
   cursor: not-allowed;
+}
+
+button.complete {
+  color: rgba(64, 160, 39, 0.685) !important;
+}
+
+.onboard_icon {
+  position: absolute;
+  width: 1.5rem;
+  height: 1.5rem;
+  left: 0.5rem;
+  top: 0.51rem;
+}
+
+.skip {
+  border: none;
+  background-color: transparent;
+  color: var(--semi-active);
+  font-size: 0.85rem;
+  font-weight: 400;
+  width: min-content;
+  cursor: pointer;
+}
+
+.skip:hover {
+  color: var(--nearly-active);
+  text-decoration: underline;
 }

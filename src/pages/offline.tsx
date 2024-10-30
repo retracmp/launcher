@@ -1,9 +1,14 @@
 import { useConfigControl } from "src/state/config";
 import PlaySnow from "src/components/play";
 import DrawerContainer from "src/app/drawer";
+import { killEpicGames } from "src/lib/tauri";
 
 const Offline = () => {
   const username = useConfigControl((s) => s.raw_credentials);
+
+  const handleKillGames = () => {
+    killEpicGames();
+  };
 
   return (
     <DrawerContainer>
@@ -27,6 +32,9 @@ const Offline = () => {
             </div>
           </div>
           <PlaySnow />
+          <button className="default red" onClick={handleKillGames}>
+            Kill fortnite and epic games launcher
+          </button>
         </div>
       </div>
     </DrawerContainer>

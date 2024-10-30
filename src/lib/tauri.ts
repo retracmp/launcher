@@ -13,6 +13,18 @@ export const hashFile = async (i: string) => {
   return result;
 };
 
+export const killEpicGames = async () => {
+  const result = await invoke<string>("kill").catch((s) => {
+    console.error(s);
+    // message(s, {
+    //   title: "Retrac Error",
+    //   type: "error",
+    // });
+    return s as string;
+  });
+  return result;
+};
+
 export const fileExists = async (i: string) => {
   const result = await invoke<boolean>("exists", { i }).catch((s) => {
     console.error(s);

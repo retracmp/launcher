@@ -105,7 +105,7 @@ async fn experience(i: String, c: &str, ac_token: &str, _local: bool, edit_on_re
 
 #[tauri::command]
 async fn offline(i: String, username: &str, ac_token: &str, launch_args: &str) -> Result<bool, String> {
-  carter::kill();
+  // carter::kill();
   std::thread::sleep(std::time::Duration::from_millis(1000));
 
   let path = PathBuf::from(i);
@@ -157,7 +157,7 @@ fn lam(window: Window) {
   std::thread::spawn(move || {
     loop {
       window.emit("fortnite_process_id", carter::search()).unwrap();
-      std::thread::sleep(std::time::Duration::from_millis(100));
+      std::thread::sleep(std::time::Duration::from_millis(1000));
     }
   });
 }
@@ -174,8 +174,8 @@ fn main() {
       // apply_blur(&window, Some((18, 18, 18, 125))).expect("Unsupported platform! 'apply_blur' is only supported on Windows");
 
       tauri_plugin_deep_link::register("snow", move |request| {
-        let re = Regex::new(r"snow://auth:([^/]+)").unwrap();
-        let re2 = Regex::new(r"snow://auth_onboard:([^/]+)").unwrap();
+        let re = Regex::new(r"snow://auth@([^/]+)").unwrap();
+        let re2 = Regex::new(r"snow://auth_onboard@([^/]+)").unwrap();
 
         if  window.set_focus().is_err() {
           return;
