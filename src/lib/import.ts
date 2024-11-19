@@ -6,7 +6,6 @@ import { LOADING_STATES, useStates } from "src/state/state";
 import { fs } from "@tauri-apps/api";
 import client from "src/external/client";
 import { getFileSize } from "src/lib/tauri";
-import { useConfigControl } from "src/state/config";
 
 const versionLookup = new Map<string, string>([
   ["7e9ca42b2f4691fe40ab64ed79cd6ae00a3ac0edd2ed909371b00f0e6048202f", "1.7.1"],
@@ -162,7 +161,7 @@ export const hasPakInstalled = async (isPlay: bool) => {
 
 export const DownloadCustomContent = async () => {
   const libraryControl = useLibraryControl.getState();
-  const config = useConfigControl.getState();
+  // const config = useConfigControl.getState();
 
   if (libraryControl.getCurrentEntry() === null)
     return message("Please set the Fortnite directory first!", {

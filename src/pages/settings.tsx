@@ -172,7 +172,6 @@ const Settings = () => {
       <div className="settingsActions">
         {disable_themes && (
           <p className="themeWarning">Donate to unlock themes.</p>
-          // SHOUTOUT TO THE REAL ONES WHO CAN BUILD THE LAUNCHER THEMSELVES AND BYPASS THIS!
         )}
         <div className="themes">
           <button
