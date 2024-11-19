@@ -40,7 +40,7 @@ const PlaySnow = () => {
   // remove . and turn int oa 3 digit number
   const launcherNum = parseInt(launcher?.current_version.split(".")[2] || "0");
 
-  const [version, setVersion] = useState("1.0.13");
+  const [version, setVersion] = useState("1.0.15");
   useEffect(() => {
     (async () => {
       const v = await getVersion();
@@ -54,7 +54,7 @@ const PlaySnow = () => {
   const isFortniteRunning = currentFortniteProcess > 0;
   const disableButton =
     (isFortniteRunning && oneSession) ||
-    fortniteEntry?.releaseVersion != 14 ||
+    (fortniteEntry?.releaseVersion != 14 && !type) ||
     !fortniteEntry ||
     (!username && type) ||
     (!type && !pakInstalled) ||
@@ -102,7 +102,8 @@ const PlaySnow = () => {
 
   const chooseLabel = (): string => {
     if (!fortniteEntry) return "Invalid Installation";
-    if (fortniteEntry.releaseVersion != 14) return "Wrong Game Version";
+    if (fortniteEntry.releaseVersion != 14 && !type)
+      return "Wrong Game Version";
     if (isFortniteRunning && oneSession) return "Fortnite is running";
     if (!username && type) return "Invalid Credentials";
     if (!type && !pakInstalled) return "DOWNLOAD LATEST UPDATE";

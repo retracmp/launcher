@@ -24,7 +24,7 @@ const versionLookup = new Map<string, string>([
   ["8dbca1d00855e48aa5d70ff12272fb4eaebfda915cb18a8d0ac056bdadd24f33", "9.41"],
   ["cd50eaa63bed9b6f6990cfd33f8f6f8c0b688c2f5d13b8c7e0739fcb306aed8e", "11.31"],
   ["78f00934fa00f0c184e6b0a7219048a17066f6bba6a13d4408735928f295cdfe", "12.41"],
-  ["0d5a49a5b7f01ac2d8bdaa76b9beceb53997ed05d8b9d1e936db6470a15714e9", "14.30"],
+  // ["0d5a49a5b7f01ac2d8bdaa76b9beceb53997ed05d8b9d1e936db6470a15714e9", "14.30"],
   ["fa6d1bd8cf09219753285a8e3e79b78156c7ae792fbb2537a9dca1c3043bd178", "14.40"],
   ["f0ea139dd7be93da7a36f5f91bcea9f84f914709e9cc3253726736f8d7b21133", "15.30"],
 ]);
@@ -102,7 +102,7 @@ const importBuild = async (path: string) => {
 
 export const hasPakInstalled = async (isPlay: bool) => {
   const libraryControl = useLibraryControl.getState();
-  const config = useConfigControl.getState();
+  // const config = useConfigControl.getState();
 
   const entry = libraryControl.getCurrentEntry();
   if (!entry) return false;
@@ -119,14 +119,13 @@ export const hasPakInstalled = async (isPlay: bool) => {
   }
 
   const okayFiles = {
-    "pakchunkRetrac-WindowsClient_P.pak": false,
-    "pakchunkRetrac-WindowsClient_P.sig": false,
+    "pakchunk2004-WindowsClient_P.utoc": false,
+    "pakchunk2004-WindowsClient_P.ucas": false,
+    "pakchunk2004-WindowsClient_P.sig": false,
+    "pakchunk2004-WindowsClient_P.pak": false,
+    "pakchunk2003-WindowsClient_P.sig": false,
+    "pakchunk2003-WindowsClient_P.pak": false,
   } as Record<string, boolean>;
-
-  if (config.bubble_builds) {
-    okayFiles["pakchunkRetracBubble-WindowsClient_P.pak"] = false;
-    okayFiles["pakchunkRetracBubble-WindowsClient_P.sig"] = false;
-  }
 
   for (const item in okayFiles) {
     console.log(item, pakSizes.data[item]);
@@ -185,20 +184,24 @@ export const DownloadCustomContent = async () => {
   }
 
   const to_download = {
-    "pakchunkRetrac-WindowsClient_P.pak": `${
+    "pakchunk2003-WindowsClient_P.pak": `${
       libraryControl.getCurrentEntry()?.path
-    }\\FortniteGame\\Content\\Paks\\pakchunkRetrac-WindowsClient_P.pak`,
-    "pakchunkRetrac-WindowsClient_P.sig": `${
+    }\\FortniteGame\\Content\\Paks\\pakchunk2003-WindowsClient_P.pak`,
+    "pakchunk2003-WindowsClient_P.sig": `${
       libraryControl.getCurrentEntry()?.path
-    }\\FortniteGame\\Content\\Paks\\pakchunkRetrac-WindowsClient_P.sig`,
-    ...(config.bubble_builds && {
-      "pakchunkRetracBubble-WindowsClient_P.pak": `${
-        libraryControl.getCurrentEntry()?.path
-      }\\FortniteGame\\Content\\Paks\\pakchunkRetracBubble-WindowsClient_P.pak`,
-      "pakchunkRetracBubble-WindowsClient_P.sig": `${
-        libraryControl.getCurrentEntry()?.path
-      }\\FortniteGame\\Content\\Paks\\pakchunkRetracBubble-WindowsClient_P.sig`,
-    }),
+    }\\FortniteGame\\Content\\Paks\\pakchunk2003-WindowsClient_P.sig`,
+    "pakchunk2004-WindowsClient_P.pak": `${
+      libraryControl.getCurrentEntry()?.path
+    }\\FortniteGame\\Content\\Paks\\pakchunk2004-WindowsClient_P.pak`,
+    "pakchunk2004-WindowsClient_P.sig": `${
+      libraryControl.getCurrentEntry()?.path
+    }\\FortniteGame\\Content\\Paks\\pakchunk2004-WindowsClient_P.sig`,
+    "pakchunk2004-WindowsClient_P.ucas": `${
+      libraryControl.getCurrentEntry()?.path
+    }\\FortniteGame\\Content\\Paks\\pakchunk2004-WindowsClient_P.ucas`,
+    "pakchunk2004-WindowsClient_P.utoc": `${
+      libraryControl.getCurrentEntry()?.path
+    }\\FortniteGame\\Content\\Paks\\pakchunk2004-WindowsClient_P.utoc`,
   };
 
   for (const [url, path] of Object.entries(to_download)) {
