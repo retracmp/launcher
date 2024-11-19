@@ -22,6 +22,7 @@ const Onboard = () => {
       libraryControl.remove(library.binaryHash);
     }
     importBuildFromDialog();
+    setSkippedAmount(x => x+1);
   };
 
   return (
