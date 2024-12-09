@@ -160,3 +160,18 @@ export const deleteFile = async (path: string) => {
   });
   return result;
 };
+
+export const downloadCustomContent = async (path: string) => {
+  const result = await invoke<boolean>("download_retrac_custom_content", {
+    path,
+  }).catch((s) => {
+    console.error(s);
+    message(s, {
+      title: "Retrac Error",
+      type: "error",
+    });
+    return s as string;
+  });
+
+  return result;
+};

@@ -93,6 +93,7 @@ type DownloadProgress_rust = {
   wanted_file_size: number;
   downloaded_file_size: number;
   download_speed: number;
+  is_zip_progress: bool;
 };
 
 type ServersResponse = {
@@ -106,12 +107,48 @@ type Bucket = {
   servers: Server[];
 };
 
+/**
+ * {
+    "id": "793382a5-e763-44c0-919f-64dace6276b3",
+    "name": "14457889:0:EU:Playlist_Vamp_Solo",
+    "playercount": 1,
+    "status": 3,
+    "string_status": "PlayersMatchmaked_WaitingForBus",
+    "bucket_id": "14457889:0:EU:Playlist_Vamp_Solo",
+    "parties_assigned": [
+        {
+            "id": "b24pop9mkufk29e1hikbfg0g",
+            "is_donator": true,
+            "party_members": [
+                {
+                    "id": "c61ug2vqfew06hkjfm368493"
+                }
+            ]
+        }
+    ],
+    "region": "EU",
+    "maxplayercount": 35,
+    "version": "Fortnite/++Fortnite+Release-14.40-CL-14550713"
+},
+ */
+
 type Server = {
   id: string;
-  bucket_id: string;
-  status: ServerStatus;
-  party_ids_assinged: string[];
+  name: string;
   playercount: number;
+  status: number;
+  string_status: string;
+  bucket_id: string;
+  parties_assigned: Array<{
+    id: string;
+    is_donator: bool;
+    party_members: Array<{
+      id: string;
+    }>;
+  }>;
+  region: string;
+  maxplayercount: number;
+  version: string;
 };
 
 type PlayersInfoResponse = Array<{

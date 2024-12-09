@@ -13,6 +13,13 @@
   min-height: 108px;
 }
 
+.downloadContainer.zipmode {
+  min-height: max-content;
+  /* background-image: linear-gradient(to right, #4557fa, #349bfc); */
+  filter: hue-rotate(-60deg) !important;
+  animation: none !important;
+}
+
 .downloadContainer .header {
   display: flex;
   flex-direction: column;

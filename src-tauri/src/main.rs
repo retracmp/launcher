@@ -202,12 +202,12 @@ fn main() {
     })
     .on_window_event(move |event| match event.event() {
       WindowEvent::Destroyed => {
-        carter::kill();
+        // carter::kill();
       }
       WindowEvent::Resized(..) => std::thread::sleep(std::time::Duration::from_millis(1)),
       _ => {}
     })
-    .invoke_handler(tauri::generate_handler![hash, exists, experience, kill, offline, size, download, delete])
+    .invoke_handler(tauri::generate_handler![hash, exists, experience, kill, offline, size, download, delete, carter::download_retrac_custom_content])
     .run(tauri::generate_context!())
     .expect("error while running tauri application");
 }

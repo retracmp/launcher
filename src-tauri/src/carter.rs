@@ -1,7 +1,5 @@
-use sysinfo::System;
 use std::io::Write;
 use std::os::windows::process::CommandExt;
-use futures_util::StreamExt;
 
 use winapi::shared::minwindef::FALSE;
 use winapi::um::handleapi::CloseHandle;
@@ -12,6 +10,13 @@ use winapi::um::tlhelp32::{
 
 use winapi::um::winnt::HANDLE;
 use winapi::um::winnt::THREAD_SUSPEND_RESUME;
+
+use sysinfo::System;
+
+extern crate num_cpus;
+use tokio::sync::Mutex;
+use std::sync::Arc;
+use tauri::{AppHandle, Manager};
 
 const CREATE_NO_WINDOW: u32 = 0x08000000;
 
@@ -71,78 +76,218 @@ pub fn search() -> u32 {
   pid
 }
 
+fn generate_ranges(file_size: u64, worker_count: u64) -> Vec<(u64, u64)> {
+  let mut ranges = Vec::new();
+  let chunk_size = file_size / worker_count;
+  let mut start = 0;
+
+  for i in 0..worker_count {
+    let end = if i == worker_count - 1 {
+      file_size - 1
+    } else {
+      start + chunk_size - 1
+    };
+
+    ranges.push((start, end));
+    start = end + 1;
+  }
+
+  ranges
+}
+
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone)]
 pub struct DownloadProgress {
   pub file_name: String,
   pub wanted_file_size: u64,
   pub downloaded_file_size: u64,
   pub download_speed: u128,
+  pub is_zip_progress: bool,
 }
 
-async fn downloader(
-  client: reqwest::Client,
-  url: &str,
-  path: &str,
-  window: &tauri::Window
-) -> Result<(), String> {
-  let response: reqwest::Response = client.get(url).send().await.or(Err("Failed to send request".to_string()))?;
-  if !response.status().is_success() {
-    return Err(format!("Failed to download '{}' for reason '{}'", url, response.status().to_string()));
-  }
-  let wal = response.content_length().unwrap_or(0);
-  let mut file_name = url.split("/").last().unwrap().to_string();
-  if file_name.contains("EasyAntiCheat") {
-    file_name = "Easy Anti-Cheat".to_string();
-  }
-  if file_name.contains("retrac") {
-    file_name = "Retrac Client".to_string();
-  }
-
-  println!("Downloading '{}' to '{}'", url, path);
-
-  let mut file = std::fs::File::create(path).or(Err(format!("Failed to create file '{}'", path)))?;
-  let mut stream = response.bytes_stream();
-
-  let mut progress: DownloadProgress = DownloadProgress {
-    file_name: file_name.clone(),
-    wanted_file_size: wal,
-    downloaded_file_size: 0,
-    download_speed: 0,
-  };
-  let last_time = std::time::Instant::now();
-
-  while let Some(chunk) = stream.next().await {
-    let chunk = chunk.unwrap();
-    file.write_all(&chunk).or(Err(format!("Failed to write to file '{}'", path)))?;
-
-    let progress = &mut progress;
-    progress.downloaded_file_size += chunk.len() as u64;
-
-    let elapsed = last_time.elapsed().as_secs();
-    if elapsed > 0 {
-      progress.download_speed = progress.downloaded_file_size as u128 / elapsed as u128;
-    }
-
-    window.emit("download_progress", progress.to_owned()).unwrap();
-  }
-
-  Ok(())
-}
+const OVERWRITE_LIST: [[&str; 2]; 3] =
+[
+  ["EasyAntiCheat", "Easy Anti-Cheat"],
+  ["retrac", "Retrac Client"],
+  ["paks", "Retrac Custom Content"],
+];
 
 pub async fn download(
   url: &str,
-  file: &str,
+  file_name: &str,
   path: &str,
-  window: &tauri::Window
+  window: &tauri::Window,
 ) -> Result<bool, String> {
-  let client = reqwest::Client::new();
-  let file_url = format!("{}/{}", url, file);
+  let file_url = format!("{}/{}", url, file_name);
+  let file_client = reqwest::Client::new();
 
-  if let Err(err) = downloader(client.clone(), &file_url, path, window).await {
-    return Err(err);
-  } else {
-    return Ok(true);
+  let file_res = file_client.get(file_url.clone()).send().await;
+  let file_res = match file_res {
+    Ok(res) => res,
+    Err(e) => return Err(format!("Failed to download '{}': {}", file_name, e)),
+  };
+
+  let wanted_file_size = file_res.content_length().unwrap_or(0);
+  let progress = Arc::new(Mutex::new(DownloadProgress {
+    file_name: file_name.to_string(),
+    wanted_file_size,
+    downloaded_file_size: 0,
+    download_speed: 0,
+    is_zip_progress: false, 
+  }));
+
+  for i in 0..OVERWRITE_LIST.len() {
+    if file_name.contains(OVERWRITE_LIST[i][0]) {
+      let mut progress_m = progress.lock().await;
+      progress_m.file_name = OVERWRITE_LIST[i][1].to_string();
+      break;
+    }
   }
+
+  window.emit("download_progress", progress.lock().await.to_owned()).unwrap();
+
+  let worker_count = (num_cpus::get() / 2) as u8;
+  let byte_ranges = generate_ranges(wanted_file_size, worker_count as u64);
+
+  let download_tasks: Vec<_> = byte_ranges
+    .into_iter()
+    .map(|(start, end)| {
+      let file_url = file_url.clone();
+      let file_name = file_name.to_string();
+      let progress = progress.clone();
+      let partial_file_client = file_client.clone();
+      let window = window.clone();
+
+      tokio::spawn(async move {
+        let mut bytes: Vec<u8> = Vec::new();
+        let res = partial_file_client
+          .get(file_url.clone())
+          .header("Range", format!("bytes={}-{}", start, end))
+          .send()
+          .await;
+
+        let mut res = match res {
+          Ok(res) => res,
+          Err(e) => return Err(format!("Failed to download '{}': {}", file_name, e)),
+        };
+
+        let mut last_update = std::time::Instant::now();
+
+        while let Some(chunk) = res.chunk().await.unwrap_or(None) {
+          let now = std::time::Instant::now();
+          let elapsed = now.duration_since(last_update).as_millis();
+          
+          let mut progress_lock = progress.lock().await;
+          progress_lock.downloaded_file_size += chunk.len() as u64;
+
+          let mut elapsed2 = now.duration_since(last_update).as_millis();
+          if elapsed2 == 0 { elapsed2 = 1; }
+          progress_lock.download_speed = (chunk.len() as u128 * 1000000) / elapsed2;
+
+          if elapsed >= 100 {
+            window.emit("download_progress", progress_lock.to_owned()).unwrap();
+            last_update = now;
+          }
+
+          drop(progress_lock);
+          bytes.write_all(&chunk).unwrap();
+        }
+
+        window.emit("download_progress", progress.lock().await.to_owned()).unwrap();
+
+        Ok::<Vec<u8>, String>(bytes)
+      })
+    })
+    .collect();
+
+  let results = futures::future::join_all(download_tasks).await;
+
+  let mut total_bytes: Vec<u8> = Vec::new();
+  for result in results {
+    let bytes = match result {
+      Ok(bytes) => bytes,
+      Err(_) => {
+        println!("Failed to download '{}'", file_name);
+        return Err("Failed to download file".to_string())
+      },
+    };
+
+    total_bytes.write_all(bytes.unwrap().as_ref()).unwrap();
+  }
+
+  let mut file = std::fs::File::create(path).or(Err(format!("Failed to create file '{}'", path)))?;
+  file.write_all(&total_bytes).or(Err(format!("Failed to write '{}'", path)))?;
+
+  Ok(true)
+}
+
+pub async fn unzip(path: &str, out_path: &str) -> Result<bool, String> {
+  let path_buf = std::path::PathBuf::from(path);
+  let out_path_buf = std::path::PathBuf::from(out_path);
+
+  let cursor = std::io::Cursor::new(
+    std::fs::read(path).or(Err(format!("Failed to read '{}'", path)))?
+  );
+  
+  match zip_extract::extract(cursor, &out_path_buf, true) {
+    Ok(_) => {},
+    Err(e) => {
+      return Err("Could not extract the file for reason: ".to_string() + e.to_string().as_str());
+    }
+  }
+
+  let mut num_tries = 0;
+  while path_buf.exists() {
+    if std::fs::remove_file(path).is_ok() {
+      break;
+    }
+
+    if num_tries > 100 {
+      return Err("Failed to remove zip file".to_string());
+    }
+
+    num_tries += 1;
+    std::thread::sleep(std::time::Duration::from_millis(100));
+  }
+
+  Ok(true)
+}
+
+#[tauri::command]
+pub async fn download_retrac_custom_content(path: &str, app: AppHandle) -> Result<bool, String> {
+  println!("download_retrac_custom_content({})", path);
+  let window = app.get_window("main").unwrap();
+  let base = std::path::PathBuf::from(path);
+
+  let mut custom_content_zip_path = base.clone();
+  custom_content_zip_path.push("paks.zip");
+
+  let custom_content_zip = download("https://cdn.retrac.site", "paks.zip", custom_content_zip_path.clone().to_str().unwrap(), &window).await;
+  if custom_content_zip.is_err() {
+    return Err("Failed to download custom content".to_string());
+  }
+
+  let mut unzip_progress = DownloadProgress {
+    file_name: "Retrac Data".to_string(),
+    wanted_file_size: 1,
+    downloaded_file_size: 0,
+    download_speed: 0,
+    is_zip_progress: true,
+  };
+  window.emit("download_progress", unzip_progress.clone()).unwrap();
+
+  let custom_content_path = base.clone();
+  let res = unzip(custom_content_zip_path.clone().to_str().unwrap(), custom_content_path.clone().to_str().unwrap(),).await;
+  match res {
+    Ok(_) => {},
+    Err(e) => {
+      return Err("Could not extract the custom content file for reason: ".to_string() + e.to_string().as_str());
+    }
+  }
+
+  unzip_progress.downloaded_file_size = 1;
+  window.emit("download_progress", unzip_progress.clone()).unwrap();
+
+  Ok(true)
 }
 
 pub async fn delete(path: &str) -> Result<bool, String> {
@@ -408,7 +553,7 @@ pub async fn launch_eac(
     fort_args.push("-disablepreedit");
   }
 
-  let fort_cmd = std::process::Command::new(fort_binary)
+  let fort_cmd = std::process::Command::new(eac_binary)
     .creation_flags(CREATE_NO_WINDOW)
     .args(fort_args)
     .args(code.split(" "))

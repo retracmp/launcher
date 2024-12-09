@@ -19,6 +19,7 @@ const Online = () => {
     <>
       <div className="snowOverview">
         <Player />
+        <DownloaderArea />
         <div className="duo">
           <div className="colmax">
             <Book />
@@ -26,7 +27,6 @@ const Online = () => {
           </div>
           <ShopPreview />
         </div>
-        <DownloaderArea />
       </div>
 
       {!config.drawer_open &&

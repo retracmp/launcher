@@ -1,11 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
-import { queryServers } from "src/external/query";
+import { queryPerson, queryServers } from "src/external/query";
 
 import "src/styles/servers.css";
 // import { FaLock, FaUnlock } from "react-icons/fa6";
 import { AnimatePresence, motion } from "framer-motion";
 import { useConfigControl } from "src/state/config";
 import { Link } from "@tanstack/react-router";
+
 const Servers = () => {
   const { data: servers, error } = useQuery({
     queryKey: ["servers"],
@@ -21,12 +22,17 @@ const Servers = () => {
   const flatMap = (servers.buckets || []).flatMap(
     (bucket) => Object.values(bucket.servers || []) || []
   );
-  const waitingToStart = flatMap.filter((server) => (server.status || 0) === 0);
-  const joinable = flatMap.filter((server) => (server.status || 0) === 1);
-  const closed = flatMap.filter((server) => (server.status || 0) === 2);
+  // const waitingToStart = flatMap.filter((server) => (server.status || 0) === 0);
+  // const joinable = flatMap.filter((server) => (server.status || 0) === 1);
+  // const closed = flatMap.filter((server) => (server.status || 0) === 2);
 
   const totalInGame = flatMap.reduce(
-    (acc, server) => acc + (server.party_ids_assinged || []).length,
+    (acc, server) =>
+      acc +
+        (server.parties_assigned || []).reduce(
+          (acc, party) => acc + party.party_members.length || 0,
+          0
+        ) || 0,
     0
   );
 
@@ -37,56 +43,35 @@ const Servers = () => {
           Go Home
         </Link>
       )}
+      <h4>
+        SERVERS{" "}
+        <p>
+          These are currently active servers and serve no use of when to ready
+          up.
+        </p>
+      </h4>
       <div className="stats">
         <span className="stat">{totalInGame} total in-game.</span>
         <span className="stat">{flatMap.length} servers up.</span>
       </div>
       <AnimatePresence>
-        {waitingToStart.length === 0 && joinable.length === 0 && (
-          <motion.section
-            animate="visible"
-            initial="hidden"
-            variants={{
-              hidden: { opacity: 0 },
-              visible: { opacity: 1, transition: { staggerChildren: 0.1 } },
-            }}
-          >
+        <motion.section
+          animate="visible"
+          initial="hidden"
+          variants={{
+            hidden: { opacity: 0 },
+            visible: { opacity: 1, transition: { staggerChildren: 0.1 } },
+          }}
+        >
+          {flatMap.map((server) => (
+            <Server key={server.id} server={server} />
+          ))}
+          {flatMap.length === 0 && (
             <motion.div className="server">
               <p className="noServers">No servers are up right now.</p>
             </motion.div>
-          </motion.section>
-        )}
-        {(waitingToStart.length > 0 || joinable.length > 0) && (
-          <motion.section
-            animate="visible"
-            initial="hidden"
-            variants={{
-              hidden: { opacity: 0 },
-              visible: { opacity: 1, transition: { staggerChildren: 0.1 } },
-            }}
-          >
-            {waitingToStart.map((server) => (
-              <Server key={server.id} server={server} />
-            ))}
-            {joinable.map((server) => (
-              <Server key={server.id} server={server} />
-            ))}
-          </motion.section>
-        )}
-        {closed.length > 0 && (
-          <motion.section
-            animate="visible"
-            initial="hidden"
-            variants={{
-              hidden: { opacity: 0 },
-              visible: { opacity: 1, transition: { staggerChildren: 0.1 } },
-            }}
-          >
-            {closed.map((server) => (
-              <Server key={server.id} server={server} />
-            ))}
-          </motion.section>
-        )}
+          )}
+        </motion.section>
       </AnimatePresence>
     </div>
   );
@@ -96,45 +81,55 @@ type ServerProps = {
   server: Server;
 };
 
+const SWAP = {
+  Initialised: "Initialised",
+  AssignedParties_WaitingForGameserverSocket: "LOADING",
+  GameserverConfirmedParties_WaitingToMatchmake: "MATCHMAKING",
+  PlayersMatchmaked_WaitingForBus: "WAITING FOR BUS",
+  BusStarted_WaitingToEnd: "INGAME",
+};
+
+const getNiceName = (str: string) => {
+  const str_low = str.toLowerCase();
+
+  let Playlist = "";
+  let Gamemode = "";
+
+  if (str_low.includes("solo")) {
+    Playlist = "Solo";
+  } else if (str_low.includes("duo")) {
+    Playlist = "Duo";
+  } else if (str_low.includes("trio")) {
+    Playlist = "Trio";
+  } else if (str_low.includes("squad")) {
+    Playlist = "Squad";
+  }
+
+  if (str_low.includes("vamp")) {
+    Gamemode = "Lategame";
+  } else if (str_low.includes("showdown")) {
+    Gamemode = "Arena";
+  } else if (str_low.includes("Low")) {
+    Gamemode = "One Shot";
+  }
+
+  return `${Playlist} ${Gamemode}`;
+};
+
 const Server = (props: ServerProps) => {
-  // const { data: player } = useQuery({
-  //   queryKey: ["player"],
-  //   queryFn: queryPerson,
-  //   enabled: false,
-  // });
+  const { data: player } = useQuery({
+    queryKey: ["player"],
+    queryFn: queryPerson,
+  });
 
-  const stateNiceText = ((state: number) => {
-    switch (state) {
-      case 0:
-        return "LOADING";
-      case 1:
-        return "Joinable";
-      case 2:
-        return "In-game";
-      default:
-        return "Unknown";
-    }
-  })(props.server.status || 0);
+  const doIExistInGame = (props.server.parties_assigned || []).some((party) =>
+    party.party_members.some((member) => member.id === player?.ID)
+  );
 
-  const [_, __, region, playlist] = props.server.bucket_id.split(":");
-  const playlistNiceText = ((playlist: string) => {
-    switch (playlist) {
-      case "playlist_defaultsolo":
-        return "Solos";
-      case "playlist_defaultduo":
-        return "Duos";
-      case "playlist_defaulttrio":
-        return "Trios";
-      case "playlist_vamp_solo":
-        return "Lategame Solos";
-      case "playlist_showdownalt_solo":
-        return "Lategame Arena";
-      case "playlist_showdownalt_solo_retrac":
-        return "Arena";
-      default:
-        return "Unknown";
-    }
-  })(playlist.toLocaleLowerCase());
+  const totalPlayers = (props.server.parties_assigned || []).reduce(
+    (acc, party) => acc + party.party_members.length || 0,
+    0
+  );
 
   return (
     <motion.div
@@ -143,26 +138,30 @@ const Server = (props: ServerProps) => {
         visible: { opacity: 1, y: 0, scale: 1 },
       }}
       transition={{ duration: 0.1, type: "spring", stiffness: 100 }}
-      className="server"
+      className={`server ${doIExistInGame ? "inGame" : ""}`}
     >
       <div className="row">
         <h3>
           <b className={(props.server.status || 0) === 1 ? "open" : ""}>
-            {stateNiceText.toUpperCase()}
+            {/* {props.server.string_status.toUpperCase()} */}
+            {(
+              SWAP[props.server.string_status as keyof typeof SWAP] ||
+              props.server.string_status
+            ).toUpperCase()}
           </b>{" "}
-          <p>•</p> {playlistNiceText}
+          <p>•</p> {getNiceName(props.server.bucket_id)}
         </h3>
         <s></s>
         <div className="tags">
-          {/* {props.server.DonatorOnly && (
+          {doIExistInGame && (
             <p className="donateonly">
-              {!isDonator ? <FaLock /> : <FaUnlock />}
-              <span className="text">Donators Only</span>
+              {/* {!isDonator ? <FaLock /> : <FaUnlock />} */}
+              <span className="text">YOU ARE IN THIS GAME</span>
             </p>
-          )} */}
+          )}
           <p className="players">
-            {(props.server.party_ids_assinged || []).length}
-            <small>/100</small>
+            {totalPlayers}
+            <small>/{props.server.maxplayercount}</small>
           </p>
         </div>
       </div>
@@ -174,14 +173,14 @@ const Server = (props: ServerProps) => {
               ((props.server.status || 0) === 2 ? "closed" : "")
             }
             style={{
-              width: `${(props.server.party_ids_assinged || []).length}%`,
+              width: `${(totalPlayers / props.server.maxplayercount) * 100}%`,
             }}
           />
         </div>
       </div>
       <div className="row">
         <span className="serverId">
-          <b></b> {region} • {props.server.id}
+          <b></b> {props.server.region} • {props.server.id}
         </span>
       </div>
     </motion.div>

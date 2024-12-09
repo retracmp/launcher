@@ -23,6 +23,7 @@ const DownloaderArea = () => {
       wanted_file_size: 0,
       downloaded_file_size: 0,
       download_speed: 0,
+      is_zip_progress: true,
     });
 
   const onDownloadProgress = (progress: DownloadProgress_rust) => {
@@ -51,6 +52,7 @@ const DownloaderArea = () => {
           wanted_file_size: 0,
           downloaded_file_size: 0,
           download_speed: 0,
+          is_zip_progress: false,
         });
         setDownloading(false);
       }, 3000);
@@ -71,40 +73,50 @@ const DownloaderArea = () => {
           exit={{
             opacity: 0,
           }}
-          className="downloadContainer"
+          className={`downloadContainer ${
+            downloadProgress.is_zip_progress && "zipmode"
+          }`}
           id="downloaderArea"
         >
           <div className="header">
-            <h3>
-              {downloadProgress.downloaded_file_size ===
-              downloadProgress.wanted_file_size
-                ? "Downloaded"
-                : "Downloading"}{" "}
-              {sessionFileDescription}
-            </h3>
+            {!downloadProgress.is_zip_progress ? (
+              <h3>
+                {downloadProgress.downloaded_file_size ===
+                downloadProgress.wanted_file_size
+                  ? "Downloaded"
+                  : "Downloading"}{" "}
+                {sessionFileDescription}
+              </h3>
+            ) : (
+              <h3>Extracting required files</h3>
+            )}
             <small>
               This may take a minute.
-              <small className="left">
-                {Math.round(
-                  (downloadProgress.download_speed / 1000 / 1000) * 10
-                ) / 10}{" "}
-                MB/s
-              </small>
+              {!downloadProgress.is_zip_progress && (
+                <small className="left">
+                  {Math.round(
+                    (downloadProgress.download_speed / 1000 / 5000) * 10
+                  ) / 10}{" "}
+                  MB/s
+                </small>
+              )}
             </small>
           </div>
           <p className="fileName">{downloadProgress.file_name}</p>
-          <div className="downloadProgress">
-            <div
-              className="downloadProgressFill"
-              style={{
-                width: `${
-                  (downloadProgress.downloaded_file_size /
-                    downloadProgress.wanted_file_size) *
-                  100
-                }%`,
-              }}
-            ></div>
-          </div>
+          {!downloadProgress.is_zip_progress && (
+            <div className="downloadProgress">
+              <div
+                className="downloadProgressFill"
+                style={{
+                  width: `${
+                    (downloadProgress.downloaded_file_size /
+                      downloadProgress.wanted_file_size) *
+                    100
+                  }%`,
+                }}
+              ></div>
+            </div>
+          )}
         </motion.div>
       )}
     </AnimatePresence>

@@ -42,11 +42,17 @@ type ConfigState = {
 
   custom_launch_args: string;
   set_custom_launch_args: (custom_launch_args: string) => void;
+
+  kill_fortnite_on_close: boolean;
+  set_kill_fortnite_on_close: (kill_fortnite_on_close: boolean) => void;
 };
 
 export const useConfigControl = create<ConfigState>()(
   persist(
     (set) => ({
+      kill_fortnite_on_close: false,
+      set_kill_fortnite_on_close: (kill_fortnite_on_close: boolean) =>
+        set({ kill_fortnite_on_close }),
       bubble_builds: false,
       set_bubble_builds: (bubble_builds: boolean) => set({ bubble_builds }),
       reset_on_release: false,

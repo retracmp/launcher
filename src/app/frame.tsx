@@ -16,6 +16,7 @@ import "src/styles/frame.css";
 import Settings from "src/pages/settings";
 import Offline from "src/pages/offline";
 import { FaCog } from "react-icons/fa";
+import { killEpicGames } from "src/lib/tauri";
 
 const ROLE_TIERS = [
   "booster",
@@ -73,6 +74,13 @@ const Frame = () => {
     })();
   }, [libraryControl.entries]);
 
+  useEffect(() => {
+    let t = setInterval(async () => {
+      libraryControl.setPakValid(await hasPakInstalled(false));
+    }, 1000);
+    return () => clearInterval(t);
+  }, [libraryControl.entries]);
+
   const [version, setVersion] = useState("1.0.13");
   useEffect(() => {
     (async () => {
@@ -118,7 +126,10 @@ const Frame = () => {
           )}
           <button
             data-tauri-drag-region
-            onClick={() => appWindow.close()}
+            onClick={() => {
+              if (config.kill_fortnite_on_close) killEpicGames();
+              appWindow.close();
+            }}
             className="tauriFrameAction close"
           >
             <HiX />

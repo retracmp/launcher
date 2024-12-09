@@ -40,7 +40,7 @@ const PlaySnow = () => {
   // remove . and turn int oa 3 digit number
   const launcherNum = parseInt(launcher?.current_version.split(".")[2] || "0");
 
-  const [version, setVersion] = useState("1.0.15");
+  const [version, setVersion] = useState("1.0.16");
   useEffect(() => {
     (async () => {
       const v = await getVersion();
@@ -68,6 +68,8 @@ const PlaySnow = () => {
   }, []);
 
   const handleClick = async () => {
+    setPak(await hasPakInstalled(false));
+
     if (oneSession && currentFortniteProcess) {
       return;
     }

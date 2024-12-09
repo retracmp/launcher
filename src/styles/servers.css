@@ -33,6 +33,10 @@
   min-height: max-content;
 }
 
+.serverContainer > section > .server.inGame {
+  border: 0.1rem solid #00ff5527;
+}
+
 .serverContainer > section > .server > .row {
   display: flex;
   flex-direction: row;
@@ -87,6 +91,7 @@
 
 .tags {
   position: absolute;
+  width: max-content;
   right: 0.5rem;
   display: flex;
   flex-direction: row;
@@ -104,7 +109,7 @@
   font-weight: 500;
   line-height: 0.75rem;
   color: #ffffffea;
-  background-color: #0000003f;
+  background-color: #111313;
   backdrop-filter: blur(0.25rem);
   border-radius: 0.35rem;
 }
@@ -121,13 +126,12 @@
   font-size: 0.9rem;
   font-weight: 500;
   line-height: 0.75rem;
-  width: 1.4rem;
-  max-width: 1.4rem;
-  padding: 0.165rem;
+  width: max-content !important;
+  padding: 0.25rem;
   height: 1.4rem;
   color: #ffffffbb;
   overflow: hidden;
-  background-image: linear-gradient(90deg, #ff44444b, #dd0bf069);
+  background-image: linear-gradient(90deg, #5b2628, #681570);
   backdrop-filter: blur(0.25rem);
   border-radius: 0.35rem;
   transition: width 0.15s, max-width 0.15s;
@@ -142,7 +146,6 @@
 
 .serverContainer > section > .server > .row p.donateonly:hover {
   width: 8rem;
-  max-width: 8rem;
 }
 
 .serverContainer > section > .server > .row p.donateonly:hover svg {
@@ -151,15 +154,16 @@
 
 .serverContainer > section > .server > .row p.donateonly span.text {
   white-space: nowrap;
-  width: 0;
+  width: 100%;
   overflow: hidden;
   transition: width 0.15s;
+  font-family: var(--font-body);
+  font-weight: 700 !important;
 }
 
 .serverContainer > section > .server > .row p.donateonly:hover span.text {
-  width: 6rem;
+  /* width: 6rem; */
   color: #ffffff;
-  font-weight: 500;
 }
 
 .serverContainer > section > .server > .row .progress {
@@ -185,7 +189,6 @@
 @media screen and (min-width: 690px) {
   .serverContainer > section > .server > .row p.donateonly {
     width: 8rem;
-    max-width: 8rem;
   }
 
   .serverContainer > section > .server > .row p.donateonly svg {
@@ -193,7 +196,7 @@
   }
 
   .serverContainer > section > .server > .row p.donateonly span.text {
-    width: 6rem;
+    /* width: 6rem; */
     font-weight: 500;
     color: #ffffff;
   }
@@ -254,4 +257,8 @@
   min-height: 1.1rem;
   min-width: 1.1em;
   margin-right: 0.25rem;
+}
+
+.serverContainer > h4 {
+  margin-bottom: 0 !important;
 }

@@ -259,6 +259,13 @@ const Settings = () => {
         </div>
 
         <Toggle
+          title="Kill Fortnite on close"
+          description="When Retrac launcher is closed, kill all related Fortnite processes. This is recommended."
+          active={configControl.kill_fortnite_on_close}
+          onToggle={(v) => configControl.set_kill_fortnite_on_close(v)}
+        />
+
+        <Toggle
           title="Always On Top"
           description="Keep the launcher on top of other windows."
           active={configControl.always_on_top}
