@@ -1,9 +1,10 @@
 [package]
 name = "retraclauncher"
-version = "1.0.16"
+version = "1.0.17"
 description = "Retrac Launcher"
 authors = ["ectrc"]
 edition = "2021"
+build = "build.rs"
 
 [build-dependencies]
 tauri-build = { version = "1.5", features = [] }
@@ -11,7 +12,7 @@ tauri-build = { version = "1.5", features = [] }
 [dependencies]
 tauri-plugin-deep-link = { git = "https://github.com/FabianLars/tauri-plugin-deep-link", branch = "main" }
 reqwest = { version = "0.11.3", features = ["stream"] }
-winapi = { version = "0.3", features = ["tlhelp32"] }
+winapi = { version = "0.3", features = ["tlhelp32", "securitybaseapi"] }
 tauri = { version = "1.5", features = [ "api-all"] }
 serde = { version = "1.0", features = ["derive"] }
 window-shadows = "0.2.2"
@@ -26,6 +27,7 @@ sysinfo = "0.33.0"
 num_cpus = "1.0"
 tokio = "1.28.2"
 sha2 = "0.10.8"
+embed-resource = "1.6"
 
 [features]
 custom-protocol = ["tauri/custom-protocol"]

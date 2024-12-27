@@ -12,6 +12,10 @@
   min-height: 64px;
 }
 
+.duo .player {
+  width: 49%;
+}
+
 .player .avatar {
   height: calc(100% + 2rem);
   min-height: 3.5rem;
@@ -61,6 +65,6 @@
   font-family: var(--font-body);
   margin-bottom: 0.3rem;
   white-space: nowrap;
-  /* overflow: hidden; */
+  overflow: hidden;
   text-overflow: ellipsis;
 }

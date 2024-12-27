@@ -12,8 +12,11 @@ import { getVersion } from "@tauri-apps/api/app";
 import client from "src/external/client";
 
 import { FaLock } from "react-icons/fa6";
+import { HiExclamationTriangle } from "react-icons/hi2";
 
 const PlaySnow = () => {
+  const config = useConfigControl();
+
   const [currentFortniteProcess, set] = useState<number>(0);
   const [add, remove] = useEvents((s) => [s.subscribe, s.unsubscribe]);
   const [oneSession, username, type, local, eor, dpe, launchargs] =
@@ -116,28 +119,37 @@ const PlaySnow = () => {
   };
 
   return (
-    <button
-      className={
-        "default " + (isFortniteRunning && oneSession ? "red" : "green")
-      }
-      onClick={handleClick}
-      disabled={disableButton}
-    >
-      {oneSession && (
-        <motion.div
-          variants={{
-            visible: { opacity: 1 },
-            hidden: { opacity: 0 },
-          }}
-          initial="hidden"
-          animate={isFortniteRunning || disableButton ? "visible" : "hidden"}
-          className="leftIcon hide"
-        >
-          <FaLock />
-        </motion.div>
+    <>
+      {!config.is_defender_excluded && (
+        <p className="smallwarning">
+          <HiExclamationTriangle className="warn" />
+          Retrac is not excluded from Windows Defender. You may encounter
+          unexpected issues.
+        </p>
       )}
-      {chooseLabel()}
-    </button>
+      <button
+        className={
+          "default " + (isFortniteRunning && oneSession ? "red" : "green")
+        }
+        onClick={handleClick}
+        disabled={disableButton}
+      >
+        {oneSession && (
+          <motion.div
+            variants={{
+              visible: { opacity: 1 },
+              hidden: { opacity: 0 },
+            }}
+            initial="hidden"
+            animate={isFortniteRunning || disableButton ? "visible" : "hidden"}
+            className="leftIcon hide"
+          >
+            <FaLock />
+          </motion.div>
+        )}
+        {chooseLabel()}
+      </button>
+    </>
   );
 };
 

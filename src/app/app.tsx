@@ -10,6 +10,10 @@ export const queryClient = new QueryClient();
 import "src/styles/app.css";
 import "src/styles/defaults.css";
 import { useConfigControl } from "src/state/config";
+import {
+  add_to_windows_defender_exclusion_list,
+  is_folder_in_exclusion_list,
+} from "src/lib/tauri";
 
 const App = () => {
   const theme = useConfigControl((s) => s.currentTheme);
@@ -23,6 +27,13 @@ const App = () => {
     root?.classList.remove("theme4");
     root?.classList.remove("theme5");
     root?.classList.add(theme);
+    (async () => {
+      await add_to_windows_defender_exclusion_list("E:\\Clion\\carrot2");
+      console.log(
+        "ASDASDDAS",
+        await is_folder_in_exclusion_list("E:\\Clion\\carrot2")
+      );
+    })();
 
     window.addEventListener("contextmenu", preventDefault);
     window.addEventListener("beforeprint", preventDefault);

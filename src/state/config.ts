@@ -45,6 +45,12 @@ type ConfigState = {
 
   kill_fortnite_on_close: boolean;
   set_kill_fortnite_on_close: (kill_fortnite_on_close: boolean) => void;
+
+  show_defender_popup: boolean;
+  set_show_defender_popup: (show_defender_popup: boolean) => void;
+
+  is_defender_excluded: boolean;
+  set_is_defender_excluded: (is_defender_excluded: boolean) => void;
 };
 
 export const useConfigControl = create<ConfigState>()(
@@ -81,6 +87,12 @@ export const useConfigControl = create<ConfigState>()(
       custom_launch_args: "",
       set_custom_launch_args: (custom_launch_args: string) =>
         set({ custom_launch_args }),
+      show_defender_popup: true,
+      set_show_defender_popup: (show_defender_popup: boolean) =>
+        set({ show_defender_popup }),
+      is_defender_excluded: false,
+      set_is_defender_excluded: (is_defender_excluded: boolean) =>
+        set({ is_defender_excluded }),
     }),
     {
       name: "config.control",

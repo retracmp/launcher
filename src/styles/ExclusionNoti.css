@@ -1,0 +1,141 @@
+.eclusion {
+  display: flex;
+  flex-direction: row;
+  gap: 0.25rem;
+  /* padding: 0.5rem; */
+  /* border-radius: 0.25rem; */
+  /* background-image: linear-gradient(to right, #a88010, #dbbb03); */
+  min-height: max-content;
+}
+
+.eclusion .warn {
+  min-width: 2rem;
+  max-width: 2rem;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.eclusion .info {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  line-height: 1rem;
+}
+
+.eclusion .info h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.eclusion .info p {
+  font-size: 0.9rem;
+  font-weight: 300;
+  opacity: 0.75;
+}
+
+.eclusion .accept {
+  margin-left: auto;
+  border: none;
+  outline: none;
+  background-color: #349bfc;
+  border-radius: 0.3rem;
+  padding: 0.3rem 0.5rem;
+  min-width: fit-content;
+  height: min-content;
+  cursor: pointer;
+  background-image: linear-gradient(to right, #4557fa, #349bfc);
+  color: white;
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-top: auto;
+  margin-bottom: auto;
+  margin-right: auto;
+  transition: filter 0.2s;
+}
+
+.eclusion .accept:hover {
+  filter: brightness(1.1);
+}
+
+.eclusion .Cancel {
+  position: absolute;
+  right: 0.25rem;
+  top: 0.25rem;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff00;
+  transition: background-color 0.2s;
+}
+
+.eclusion .Cancel:hover {
+  background-color: #ffffff22;
+}
+
+.eclusion .Cancel svg {
+  fill: #ffffff;
+  width: 1rem;
+  height: 1rem;
+}
+
+.eclusion.click {
+  min-width: max-content;
+  min-height: fit-content;
+  padding: 0.5rem;
+  border-radius: 0.45rem;
+  cursor: pointer;
+  scale: 1;
+  transition: scale 0.2s;
+  background-image: linear-gradient(to right, #349bfc, #4557fa);
+}
+
+.eclusion.click:active {
+  scale: 0.99;
+}
+
+.eclusion.click .info {
+  height: 100%;
+}
+
+.eclusion.click .info p {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 400;
+  opacity: 1;
+}
+
+.flexy {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0.5rem;
+  padding-top: 0.6rem;
+  border-radius: 0.25rem;
+  background-image: linear-gradient(to right, #a88010, #dbbb03);
+  min-height: max-content;
+}
+
+.smallwarning {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.25rem;
+  line-height: 1rem;
+  font-size: 0.9rem;
+  font-weight: 300;
+  opacity: 0.5;
+  user-select: none;
+}
+
+.smallwarning svg {
+  width: 1rem;
+  height: 1rem;
+  fill: #ffffff;
+  min-width: 1rem;
+  margin-right: 0.35rem;
+}

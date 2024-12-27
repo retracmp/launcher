@@ -247,11 +247,11 @@ a[href] {
   flex: 1;
 }
 
-@media (max-width: 930px) {
-  .duo {
-    flex-direction: column;
-  }
-}
+/* @media (max-width: 930px) { */
+/* .duo {
+    /* flex-direction: column; */
+/* }  */
+/* } */
 
 .fil_empty_space {
   display: flex;

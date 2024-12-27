@@ -58,6 +58,9 @@ const Drawer = () => {
         LEADERBOARDS
       </Link>
       <s></s>
+      {config.show_defender_popup && (
+        <button className="item download">EXCLUDE RETRAC</button>
+      )}
       {!hasPakInstalled ||
         (!libraryControl.pakValid &&
           libraryControl.getCurrentEntry() != null && (

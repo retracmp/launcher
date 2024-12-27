@@ -11,6 +11,10 @@
   overflow: hidden;
 }
 
+.snowOverview > .colmax > .advert {
+  max-height: max-content;
+}
+
 .advert > img {
   position: absolute;
   top: -2rem;

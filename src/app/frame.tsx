@@ -16,7 +16,7 @@ import "src/styles/frame.css";
 import Settings from "src/pages/settings";
 import Offline from "src/pages/offline";
 import { FaCog } from "react-icons/fa";
-import { killEpicGames } from "src/lib/tauri";
+import { killEpicGames, setshouldclosefortnite } from "src/lib/tauri";
 
 const ROLE_TIERS = [
   "booster",
@@ -81,12 +81,14 @@ const Frame = () => {
     return () => clearInterval(t);
   }, [libraryControl.entries]);
 
-  const [version, setVersion] = useState("1.0.13");
+  const [version, setVersion] = useState("1.0.16");
   useEffect(() => {
     (async () => {
       const v = await getVersion();
       setVersion(v);
     })();
+
+    setshouldclosefortnite(config.kill_fortnite_on_close);
   }, []);
 
   const bestRole = player?.Account.State.Packages.reduce((acc, curr) => {
@@ -95,6 +97,7 @@ const Frame = () => {
     }
     return acc;
   }, "");
+  console.log(bestRole, "<<<<", player?.Account.State.Packages);
   const role = ROLES[bestRole as keyof typeof ROLES];
 
   return (

@@ -3,9 +3,12 @@
 use tauri::{regex::Regex, AppHandle, Manager, Window, WindowEvent};
 use window_shadows::set_shadow;
 use std::path::PathBuf;
+use std::sync::Mutex;
 use sha2::Digest;
+use std::env;
 
 mod carter;
+mod defend;
 
 #[tauri::command]
 async fn hash(i: String) -> Result<String, String> {
@@ -162,10 +165,33 @@ fn lam(window: Window) {
   });
 }
 
+#[derive(Default)]
+struct AppData {
+  should_close_fortnite: bool,
+}
+
+#[tauri::command]
+async fn setshouldclosefortnite(app: AppHandle, i: bool) {
+  let state = app.state::<Mutex<AppData>>();
+  let mut state = state.lock().unwrap();
+  state.should_close_fortnite = i;
+  println!("setshouldclosefortnite {}", i);
+}
+
 fn main() {
+  let args: Vec<String> = env::args().collect();
+
+  // if !defend::is_running_as_admin() {
+  //   println!("Please run this application as an administrator!");
+  //   defend::restart_as_admin(&args);
+  //   return;
+  // }
+  
   tauri_plugin_deep_link::prepare("rocks.snow");
   tauri::Builder::default()
     .setup(|app| {
+      app.manage(Mutex::new(AppData::default()));
+
       let window = app.get_window("main").unwrap();
       lam(window.clone());
       set_shadow(window.clone(), true).expect("Unsupported platform!");
@@ -202,12 +228,22 @@ fn main() {
     })
     .on_window_event(move |event| match event.event() {
       WindowEvent::Destroyed => {
-        // carter::kill();
+        let app_handle = event.window().app_handle();
+        let state = app_handle.state::<Mutex<AppData>>();
+        let state = state.lock().unwrap();
+
+        if state.should_close_fortnite {
+          carter::kill();
+        }
       }
       WindowEvent::Resized(..) => std::thread::sleep(std::time::Duration::from_millis(1)),
       _ => {}
     })
-    .invoke_handler(tauri::generate_handler![hash, exists, experience, kill, offline, size, download, delete, carter::download_retrac_custom_content])
+    .invoke_handler(tauri::generate_handler![
+      setshouldclosefortnite, 
+      hash, exists, experience, kill, offline, size, download, delete, carter::download_retrac_custom_content,
+      defend::add_to_windows_defender_exclusion_list, defend::is_folder_in_exclusion_list
+    ])
     .run(tauri::generate_context!())
     .expect("error while running tauri application");
 }

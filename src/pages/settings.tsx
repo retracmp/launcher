@@ -4,7 +4,7 @@ import { useUserControl } from "src/state/user";
 import { useConfigControl } from "src/state/config";
 import { useLibraryControl } from "src/state/library";
 import { motion } from "framer-motion";
-import { downloadFile } from "src/lib/tauri";
+import { downloadFile, setshouldclosefortnite } from "src/lib/tauri";
 import { hasPakInstalled, importBuildFromDialog } from "src/lib/import";
 import { queryPerson } from "src/external/query";
 import { useQuery } from "@tanstack/react-query";
@@ -231,6 +231,16 @@ const Settings = () => {
           ></button> */}
         </div>
 
+        {!configControl.is_defender_excluded && (
+          <div className="fortniteLocationContainer">
+            <button
+              className="default setting"
+              onClick={handleDownloadCustomContent}
+            >
+              Add Retrac to Defender Exclusion List
+            </button>
+          </div>
+        )}
         <div className="fortniteLocationContainer">
           <button
             className="default setting"
@@ -262,7 +272,10 @@ const Settings = () => {
           title="Kill Fortnite on close"
           description="When Retrac launcher is closed, kill all related Fortnite processes. This is recommended."
           active={configControl.kill_fortnite_on_close}
-          onToggle={(v) => configControl.set_kill_fortnite_on_close(v)}
+          onToggle={(v) => {
+            configControl.set_kill_fortnite_on_close(v);
+            setshouldclosefortnite(v);
+          }}
         />
 
         <Toggle
