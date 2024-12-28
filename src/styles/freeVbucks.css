@@ -13,6 +13,7 @@
 
 .snowOverview > .colmax > .advert {
   max-height: max-content;
+  min-height: max-content;
 }
 
 .advert > img {
