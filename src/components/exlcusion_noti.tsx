@@ -1,5 +1,6 @@
 import { HiCursorClick, HiX } from "react-icons/hi";
 import { HiExclamationTriangle } from "react-icons/hi2";
+import { exclude_retrac } from "src/lib/defender";
 import { useConfigControl } from "src/state/config";
 
 import "src/styles/ExclusionNoti.css";
@@ -32,7 +33,7 @@ const ExclusionNoti = () => {
               <HiX />
             </button>
           </div>
-          <div className="eclusion click">
+          <div className="eclusion click" onClick={exclude_retrac}>
             <HiCursorClick className="warn" />
             <div className="info">
               <p>Add Retrac to the Windows Exclusion List now.</p>

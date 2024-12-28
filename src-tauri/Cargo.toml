@@ -12,7 +12,7 @@ tauri-build = { version = "1.5", features = [] }
 [dependencies]
 tauri-plugin-deep-link = { git = "https://github.com/FabianLars/tauri-plugin-deep-link", branch = "main" }
 reqwest = { version = "0.11.3", features = ["stream"] }
-winapi = { version = "0.3", features = ["tlhelp32", "securitybaseapi"] }
+winapi = { version = "0.3", features = ["tlhelp32", "securitybaseapi", "shellapi"] }
 tauri = { version = "1.5", features = [ "api-all"] }
 serde = { version = "1.0", features = ["derive"] }
 window-shadows = "0.2.2"
@@ -28,6 +28,7 @@ num_cpus = "1.0"
 tokio = "1.28.2"
 sha2 = "0.10.8"
 embed-resource = "1.6"
+windows = { version = "0.48", features = ["Win32_Foundation", "Win32_UI_Shell", "Win32_System_SystemServices"] }
 
 [features]
 custom-protocol = ["tauri/custom-protocol"]

@@ -48,6 +48,28 @@ export const sizes = async (): Promise<SnowResponse<Record<string, int>>> => {
   };
 };
 
+export const get_paks_to_download = async (): Promise<
+  SnowResponse<string[]>
+> => {
+  const response = await axiosClient()
+    .get<string[]>(endpoints.GET_PAKS_TO_DOWNLOAD)
+    .catch((e: AxiosError<ErrorResponse>) => {
+      return e;
+    });
+
+  if (response instanceof AxiosError) {
+    return {
+      ok: false,
+      error: response.message,
+    };
+  }
+
+  return {
+    ok: true,
+    data: response.data,
+  };
+};
+
 export const version = async (): Promise<LauncherVersion> => {
   const response = await axios
     .get<LauncherVersion>(

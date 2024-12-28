@@ -43,6 +43,7 @@ export const endpoints = {
   GET_COSMETICS: "/snow/cosmetics",
   CONTENT_PAGES: "/content/api/pages/fortnite-game",
   GET_ADVERT_LINK: "/adverts",
+  GET_PAKS_TO_DOWNLOAD: "/retrac/paks_to_download",
 };
 
 const client = {

@@ -12,6 +12,7 @@ import { LOADING_STATES, useStates } from "src/state/state";
 import { fs } from "@tauri-apps/api";
 import client from "src/external/client";
 import { getFileSize } from "src/lib/tauri";
+import { get_paks_to_download } from "src/external/launcher";
 
 const versionLookup = new Map<string, string>([
   // ["7e9ca42b2f4691fe40ab64ed79cd6ae00a3ac0edd2ed909371b00f0e6048202f", "1.7.1"],
@@ -124,16 +125,30 @@ export const hasPakInstalled = async (isPlay: bool) => {
   }
 
   const okayFiles = {
-    "pakchunk2004-WindowsClient_P.utoc": false,
-    "pakchunk2004-WindowsClient_P.ucas": false,
-    "pakchunk2004-WindowsClient_P.sig": false,
-    "pakchunk2004-WindowsClient_P.pak": false,
-    "pakchunk2003-WindowsClient_P.sig": false,
-    "pakchunk2003-WindowsClient_P.pak": false,
+    // "pakchunk2004-WindowsClient_P.utoc": false,
+    // "pakchunk2004-WindowsClient_P.ucas": false,
+    // "pakchunk2004-WindowsClient_P.sig": false,
+    // "pakchunk2004-WindowsClient_P.pak": false,
+    // "pakchunk2003-WindowsClient_P.sig": false,
+    // "pakchunk2003-WindowsClient_P.pak": false,
   } as Record<string, boolean>;
 
+  const paksToDownload = await get_paks_to_download();
+  if (!paksToDownload.ok) {
+    message(
+      "Launching without custom cosmetics as the pak file is not on the file server. Some of the cosmetics may not be up to date.",
+      "Retrac Custom Data"
+    );
+    return true;
+  }
+
+  for (const pakName of paksToDownload.data) {
+    okayFiles[pakName] = false;
+  }
+
+  console.log("OKAY_FILES", okayFiles)
+
   for (const item in okayFiles) {
-    console.log(item, pakSizes.data[item]);
     if (pakSizes.data[item] === undefined) {
       if (isPlay)
         message(

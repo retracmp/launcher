@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { open } from "@tauri-apps/api/shell";
 import { useEffect } from "react";
+import { exclude_retrac } from "src/lib/defender";
 import { DownloadCustomContent, hasPakInstalled } from "src/lib/import";
 import { useConfigControl } from "src/state/config";
 import { useLibraryControl } from "src/state/library";
@@ -59,7 +60,9 @@ const Drawer = () => {
       </Link>
       <s></s>
       {config.show_defender_popup && (
-        <button className="item download">EXCLUDE RETRAC</button>
+        <button className="item download" onClick={exclude_retrac}>
+          EXCLUDE RETRAC
+        </button>
       )}
       {!hasPakInstalled ||
         (!libraryControl.pakValid &&

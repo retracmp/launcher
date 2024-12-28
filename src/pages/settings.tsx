@@ -17,6 +17,7 @@ import Toggle from "src/components/toggle";
 import Input from "../components/input";
 import { useEffect } from "react";
 import { isDevBuildMode } from "src/external/client";
+import { exclude_retrac } from "src/lib/defender";
 
 const Settings = () => {
   const { data: player } = useQuery({
@@ -43,6 +44,8 @@ const Settings = () => {
     for (const library of Object.values(libraryControl.entries)) {
       libraryControl.remove(library.binaryHash);
     }
+    configControl.set_is_defender_excluded(false);
+    configControl.set_show_defender_popup(true);
     importBuildFromDialog();
   };
 
@@ -233,10 +236,7 @@ const Settings = () => {
 
         {!configControl.is_defender_excluded && (
           <div className="fortniteLocationContainer">
-            <button
-              className="default setting"
-              onClick={handleDownloadCustomContent}
-            >
+            <button className="default setting" onClick={exclude_retrac}>
               Add Retrac to Defender Exclusion List
             </button>
           </div>

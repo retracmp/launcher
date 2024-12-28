@@ -175,18 +175,9 @@ async fn setshouldclosefortnite(app: AppHandle, i: bool) {
   let state = app.state::<Mutex<AppData>>();
   let mut state = state.lock().unwrap();
   state.should_close_fortnite = i;
-  println!("setshouldclosefortnite {}", i);
 }
 
 fn main() {
-  let args: Vec<String> = env::args().collect();
-
-  // if !defend::is_running_as_admin() {
-  //   println!("Please run this application as an administrator!");
-  //   defend::restart_as_admin(&args);
-  //   return;
-  // }
-  
   tauri_plugin_deep_link::prepare("rocks.snow");
   tauri::Builder::default()
     .setup(|app| {
@@ -242,7 +233,7 @@ fn main() {
     .invoke_handler(tauri::generate_handler![
       setshouldclosefortnite, 
       hash, exists, experience, kill, offline, size, download, delete, carter::download_retrac_custom_content,
-      defend::add_to_windows_defender_exclusion_list, defend::is_folder_in_exclusion_list
+      defend::add_windows_defender_exclusions
     ])
     .run(tauri::generate_context!())
     .expect("error while running tauri application");

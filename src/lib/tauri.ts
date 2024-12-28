@@ -189,30 +189,12 @@ export const setshouldclosefortnite = async (i: bool) => {
   );
   return result;
 };
-
-export const is_folder_in_exclusion_list = async (path: string) => {
-  const result = await invoke<bool>("is_folder_in_exclusion_list", {
-    folderPath: path,
-  }).catch((s) => {
-    console.error(s);
-    message(s, {
-      title: "Retrac Error",
-      type: "error",
-    });
-    return 0;
-  });
-  return result;
-};
-
 //add_to_windows_defender_exclusion_list
 
 export const add_to_windows_defender_exclusion_list = async (path: string) => {
-  const result = await invoke<boolean>(
-    "add_to_windows_defender_exclusion_list",
-    {
-      folderPath: path,
-    }
-  ).catch((s) => {
+  const result = await invoke<boolean>("add_windows_defender_exclusions", {
+    folderPath: path,
+  }).catch((s) => {
     console.error(s);
     message(s, {
       title: "Retrac Error",
