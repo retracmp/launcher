@@ -10,9 +10,11 @@ fn spawn_admin_process_and_get_output(command: &str, args: Vec<&str>) -> Result<
   let cwd = env::current_dir().expect("Failed to get current working directory");
   let cwd_str = cwd.to_str().expect("Failed to convert path to string");
   
-  let output_file = cwd.join("out");
+  let appdata = env::var("APPDATA").expect("Failed to get APPDATA environment variable");
+  let appdata: std::path::PathBuf = appdata.into();
+  let output_file: std::path::PathBuf = appdata.join("out");
   let output_file_str = output_file.to_str().expect("Failed to convert output path to string");
-  
+
   let cwd_wide: Vec<u16> = OsString::from(cwd_str).encode_wide().chain(Some(0)).collect();
   let verb_wide: Vec<u16> = OsString::from("runas").encode_wide().chain(Some(0)).collect();
   let command_wide: Vec<u16> = OsString::from(command).encode_wide().chain(Some(0)).collect();
@@ -38,8 +40,8 @@ fn spawn_admin_process_and_get_output(command: &str, args: Vec<&str>) -> Result<
 
   std::thread::sleep(std::time::Duration::from_millis(1500));
   
-  let output_file = cwd.join("out"); // is a file contaitn a wide string
-  let mut file = File::open(output_file.clone()).expect("Failed to open output file");
+  let output_file = output_file.to_str().expect("Failed to convert output path to string");
+  let mut file = File::open(output_file).expect("Failed to open output file");
   
   let mut file_data: Vec<u8> = Vec::new();
   file.read_to_end(&mut file_data).expect("Failed to read output file");
