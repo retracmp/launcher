@@ -2,11 +2,10 @@
 
 > A minimal Fortnite launcher solution made for Retrac.
 
-![393984311-2ad4811f-e129-4aaf-ad05-7a8abd6aebfa](https://github.com/user-attachments/assets/ff61d14b-6306-48c7-a6d7-e232a63685be)
-
-![image](https://github.com/user-attachments/assets/1f796e4c-7a09-4171-a8da-26c74dae804a)
-
-![image](https://github.com/user-attachments/assets/801e5db6-32ee-4395-8290-7c4eb07cba33)
-![image](https://github.com/user-attachments/assets/4ed1f87c-2f3c-45ce-92d5-20f215312840)
-
-![image](https://github.com/user-attachments/assets/b9237304-be7e-4e43-8b8e-56f73523c8a3)
+### Screenshots
+![image](https://github.com/user-attachments/assets/fc57cbf4-e2f9-4585-bd20-0cb33e7ff0d5)
+![image](https://github.com/user-attachments/assets/3c0be913-9fb7-4635-a7bc-e29f3fea95dc)
+![image](https://github.com/user-attachments/assets/882c1100-4d66-4ba9-9337-778bb2fea7e0)
+![image](https://github.com/user-attachments/assets/bcdc8445-e549-4aab-8ba4-cc74b03955d1)
+![image](https://github.com/user-attachments/assets/79d9c4d7-3876-4b38-bc42-82d270658b6d)
+![image](https://github.com/user-attachments/assets/85df0f4f-6fad-4ff8-bcda-999eb5ddaf12)
