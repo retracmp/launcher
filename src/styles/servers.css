@@ -9,6 +9,10 @@
   user-select: none;
 }
 
+.serverContainer > h4 {
+  min-height: max-content;
+}
+
 .serverContainer::-webkit-scrollbar {
   display: none;
 }
@@ -208,7 +212,7 @@
   width: 100%;
   align-items: center;
   gap: 0.5rem;
-  min-height: 1.5rem;
+  min-height: max-content;
 }
 
 .stats .stat {
@@ -216,11 +220,41 @@
   line-height: 0.85rem;
   font-weight: 500;
   min-height: 1rem;
-  padding: 0.25rem 0.5rem;
+  padding: 0.35rem 0.5rem;
   background-color: #0000003f;
   backdrop-filter: blur(0.25rem);
   border-radius: 0.6rem;
   color: #ffffffd7;
+}
+
+.stats > p {
+  opacity: 0.25;
+}
+
+.stats .statFilter {
+  font-size: 0.85rem;
+  line-height: 0.85rem;
+  font-weight: 500;
+  min-height: 1rem;
+  padding: 0.35rem 0.5rem;
+  background-color: #0000003f;
+  backdrop-filter: blur(0.25rem);
+  border-radius: 0.6rem;
+  color: #ffffffd7;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 0 0 2px rgba(47, 85, 58, 0);
+  transition: background-color 50ms, box-shadow 50ms;
+}
+
+.stats .statFilter:hover {
+  background-color: #2727273f;
+}
+
+.stats .statFilter.enabled {
+  box-shadow: 0 0 0 2px rgba(47, 85, 58, 0.411);
+  /* background-color: #5756563f; */
 }
 
 .back {

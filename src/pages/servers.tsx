@@ -1,10 +1,11 @@
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { queryPerson, queryServers } from "src/external/query";
+import { useConfigControl } from "src/state/config";
 
 import "src/styles/servers.css";
 // import { FaLock, FaUnlock } from "react-icons/fa6";
 import { AnimatePresence, motion } from "framer-motion";
-import { useConfigControl } from "src/state/config";
 import { Link } from "@tanstack/react-router";
 
 const Servers = () => {
@@ -15,26 +16,28 @@ const Servers = () => {
     refetchInterval: 1000,
   });
 
+  const [filter, setfilter] = useState("");
+
   const config = useConfigControl();
 
   if (error || !servers) return null;
 
-  const flatMap = (servers.buckets || []).flatMap(
-    (bucket) => Object.values(bucket.servers || []) || []
-  );
+  const flatMap = (servers.buckets || [])
+    .flatMap((bucket) => Object.values(bucket.servers || []) || [])
+    .filter((s) => (filter ? s.region === filter : true));
   // const waitingToStart = flatMap.filter((server) => (server.status || 0) === 0);
   // const joinable = flatMap.filter((server) => (server.status || 0) === 1);
   // const closed = flatMap.filter((server) => (server.status || 0) === 2);
 
-  const totalInGame = flatMap.reduce(
-    (acc, server) =>
-      acc +
-        (server.parties_assigned || []).reduce(
-          (acc, party) => acc + party.party_members.length || 0,
-          0
-        ) || 0,
-    0
-  );
+  // const totalInGame = flatMap.reduce(
+  //   (acc, server) =>
+  //     acc +
+  //       (server.parties_assigned || []).reduce(
+  //         (acc, party) => acc + party.party_members.length || 0,
+  //         0
+  //       ) || 0,
+  //   0
+  // );
 
   return (
     <div className="serverContainer">
@@ -51,8 +54,20 @@ const Servers = () => {
         </p>
       </h4>
       <div className="stats">
-        <span className="stat">{totalInGame} total in-game.</span>
-        <span className="stat">{flatMap.length} servers up.</span>
+        {/* <span className="stat">{totalInGame} total in-game.</span> */}
+        <span className="stat">{flatMap.length} servers up.</span> <p>•</p>
+        <button
+          className={`statFilter ${filter == "EU" ? "enabled" : ""}`}
+          onClick={() => setfilter((x) => (x === "EU" ? "" : "EU"))}
+        >
+          Filter EU
+        </button>
+        <button
+          className={`statFilter ${filter == "NA" ? "enabled" : ""}`}
+          onClick={() => setfilter((x) => (x === "NA" ? "" : "NA"))}
+        >
+          Filter NA
+        </button>
       </div>
       <AnimatePresence>
         <motion.section
@@ -160,7 +175,7 @@ const Server = (props: ServerProps) => {
             </p>
           )}
           <p className="players">
-            {totalPlayers}
+            {Math.min(totalPlayers, props.server.maxplayercount)}
             <small>/{props.server.maxplayercount}</small>
           </p>
         </div>
@@ -173,7 +188,10 @@ const Server = (props: ServerProps) => {
               ((props.server.status || 0) === 2 ? "closed" : "")
             }
             style={{
-              width: `${(totalPlayers / props.server.maxplayercount) * 100}%`,
+              width: `${Math.min(
+                (totalPlayers / props.server.maxplayercount) * 100,
+                100
+              )}%`,
             }}
           />
         </div>
