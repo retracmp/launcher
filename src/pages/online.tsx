@@ -11,6 +11,7 @@ import Player from "src/components/player";
 import ShopPreview from "src/components/smallShop";
 import FreeVbucks from "src/components/freeVbucks";
 import ExclusionNoti from "src/components/exlcusion_noti";
+import News from "src/components/news";
 
 export const useDomWidth = () => {
   const [size, setSize] = useState(0);
@@ -42,6 +43,7 @@ const Online = () => {
           <ExclusionNoti />
           <Player />
           <DownloaderArea />
+          <News />
           <div className="duo">
             <div className="colmax">
               <Book />
@@ -61,6 +63,7 @@ const Online = () => {
           </div>
           <DownloaderArea />
           <div className="colmax">
+            <News />
             <FreeVbucks />
             <ShopPreview />
           </div>
@@ -71,6 +74,7 @@ const Online = () => {
         <div className="snowOverview">
           <ExclusionNoti />
           <Player />
+          <News />
           <Book />
           <DownloaderArea />
           <div className="colmax">

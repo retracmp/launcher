@@ -1,6 +1,6 @@
 [package]
 name = "retraclauncher"
-version = "1.0.17"
+version = "1.0.18"
 description = "Retrac Launcher"
 authors = ["ectrc"]
 edition = "2021"

@@ -13,7 +13,7 @@
   overflow: hidden;
   user-select: none;
   border-radius: 0.35rem;
-  background-image: linear-gradient(to right, #698180, #405e55);
+  background-image: linear-gradient(to right, #94b646, #537f05);
   min-height: 64px;
   max-height: 64px;
   flex: 1;
@@ -29,15 +29,18 @@
 .duo > .battleBook {
   width: 49%;
   margin-top: auto;
-  min-width: 230px;
+  min-width: 310px;
 }
 
 .battlePassImage {
   position: absolute;
-  max-width: 6rem;
-  height: calc(100% + 0.75rem);
-  margin-left: -1rem;
+  /* max-width: 7rem; */
+  width: 9.5rem;
+  /* height: calc(100% + 0.75rem); */
+  height: 6rem;
+  margin-left: -2.8rem;
   margin-bottom: -0.35rem;
+  object-fit: contain;
 
   /* background-color: red; */
 }
@@ -52,7 +55,8 @@
 }
 
 .tierInformation small {
-  color: var(--subtext);
+  /* color: var(--subtext); */
+  color: #d8fd8db6;
   font-size: 1.25rem;
   line-height: 1.25rem;
   /* font-family: var(--font-header); */
@@ -64,7 +68,7 @@
   line-height: 1.5rem;
   /* font-family: var(--font-header); */
   font-weight: 700;
-  color: var(--wow);
+  color: #ccff32;
 }
 
 .tierInformation p strong {

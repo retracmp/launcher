@@ -43,7 +43,7 @@ const PlaySnow = () => {
   // remove . and turn int oa 3 digit number
   const launcherNum = parseInt(launcher?.current_version.split(".")[2] || "0");
 
-  const [version, setVersion] = useState("1.0.16");
+  const [version, setVersion] = useState("1.0.18");
   useEffect(() => {
     (async () => {
       const v = await getVersion();
@@ -51,7 +51,6 @@ const PlaySnow = () => {
     })();
   }, []);
   const myVersionNum = parseInt(version.split(".")[2] || "0");
-  console.log(launcherNum, myVersionNum);
 
   const fortniteEntry = getCurrentEntry();
   const isFortniteRunning = currentFortniteProcess > 0;

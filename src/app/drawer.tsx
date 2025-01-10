@@ -6,6 +6,7 @@ import { DownloadCustomContent, hasPakInstalled } from "src/lib/import";
 import { useConfigControl } from "src/state/config";
 import { useLibraryControl } from "src/state/library";
 import { useStates } from "src/state/state";
+import { appWindow, LogicalSize } from "@tauri-apps/api/window";
 
 import "src/styles/drawer.css";
 
@@ -38,6 +39,8 @@ const Drawer = () => {
     if (window.innerWidth < 320) size.x = 320;
     if (window.innerHeight < 450) size.y = 450;
     config.set_size(size);
+
+    appWindow.setSize(new LogicalSize(size.x, size.y));
   };
 
   useEffect(() => {

@@ -32,6 +32,7 @@ const News = () => {
             news={contentPages.battleroyalenewsv2.news.motds[selected]}
           />
         )}
+        <div className="makespace"></div>
       </AnimatePresence>
     </div>
   );
