@@ -10,6 +10,7 @@ const News = () => {
     queryKey: ["content-pages"],
     queryFn: queryContentPages,
   });
+
   const [selected, setSelected] = useState(0);
 
   useEffect(() => {
@@ -24,16 +25,28 @@ const News = () => {
   }, [selected, contentPages]);
 
   return (
-    <div className="newsContainer">
-      <AnimatePresence>
-        {contentPages && contentPages.battleroyalenewsv2 && (
-          <NewsItem
-            key={contentPages.battleroyalenewsv2.news.motds[selected]?.id}
-            news={contentPages.battleroyalenewsv2.news.motds[selected]}
-          />
-        )}
-        <div className="makespace"></div>
-      </AnimatePresence>
+    <div className="outerOuter">
+      <div className="newsContainer">
+        <AnimatePresence>
+          {contentPages && contentPages.battleroyalenewsv2 && (
+            <NewsItem
+              key={contentPages.battleroyalenewsv2.news.motds[selected]?.id}
+              news={contentPages.battleroyalenewsv2.news.motds[selected]}
+            />
+          )}
+        </AnimatePresence>
+      </div>
+      <div className="newsList">
+        {/* <button></button> */}
+        {contentPages?.battleroyalenewsv2?.news.motds.map((_, i) => (
+          <button
+            className={selected === i ? "on" : ""}
+            onClick={() => {
+              setSelected(i);
+            }}
+          ></button>
+        ))}
+      </div>
     </div>
   );
 };
