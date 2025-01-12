@@ -1,6 +1,6 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
-use tauri::{regex::Regex, AppHandle, Manager, Window, WindowEvent};
+use tauri::{regex::Regex, AppHandle, Manager, Window, WindowEvent, PhysicalSize};
 use window_shadows::set_shadow;
 use std::path::PathBuf;
 use std::sync::Mutex;
@@ -194,12 +194,13 @@ fn main() {
         let re = Regex::new(r"snow://auth@([^/]+)").unwrap();
         let re2 = Regex::new(r"snow://auth_onboard@([^/]+)").unwrap();
 
-        if  window.set_focus().is_err() {
+        if  window.clone().set_focus().is_err() {
           return;
         }
         if let Some(captures) = re.captures(request.as_str()) {
           if let Some(result) = captures.get(1) {
             window
+              .clone()
               .eval(&format!("window.location.hash = 'auth:{}'", result.as_str()))
               .unwrap();
           }
@@ -208,12 +209,12 @@ fn main() {
         if let Some(captures) = re2.captures(request.as_str()) {
           if let Some(result) = captures.get(1) {
             window
+              .clone()
               .eval(&format!("window.location.hash = 'auth_onboard:{}'", result.as_str()))
               .unwrap();
           }
         }
       }).unwrap();
-
 
       Ok(())
     })
@@ -227,7 +228,23 @@ fn main() {
           carter::kill();
         }
       }
-      WindowEvent::Resized(..) => std::thread::sleep(std::time::Duration::from_millis(1)),
+      WindowEvent::Resized(..) => {
+        std::thread::sleep(std::time::Duration::from_millis(1));
+
+        let mut new_size: PhysicalSize<u32> = PhysicalSize::default();
+        new_size.height = 730;
+        new_size.width = 1020;
+
+        let app_handle = event.window().app_handle();
+        let window = app_handle.get_window("main").unwrap();
+        
+        match window.set_max_size(new_size.into()) {
+          Ok(_) => {},
+          Err(_) => {
+            println!("could not resize")
+          },
+        }
+      },
       _ => {}
     })
     .invoke_handler(tauri::generate_handler![
