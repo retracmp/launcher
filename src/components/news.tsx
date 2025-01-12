@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { queryContentPages } from "src/external/query";
 
@@ -14,13 +14,14 @@ const News = () => {
     queryFn: queryContentPages,
   });
 
+  const motdsAllowed = (
+    contentPages?.battleroyalenewsv2?.news.motds || []
+  ).filter((motd) => !motd.hidden);
+
   useEffect(() => {
-    if (contentPages?.battleroyalenewsv2?.news.motds.length === 0) return;
+    if (motdsAllowed.length === 0) return;
     const interval = setInterval(() => {
-      newsState.set_selected(
-        (newsState.selected + 1) %
-          contentPages?.battleroyalenewsv2?.news.motds.length!
-      );
+      newsState.set_selected((newsState.selected + 1) % motdsAllowed.length!);
     }, 10000);
 
     return () => clearInterval(interval);
@@ -32,22 +33,16 @@ const News = () => {
         <AnimatePresence>
           {contentPages &&
             contentPages.battleroyalenewsv2 &&
-            contentPages.battleroyalenewsv2.news.motds[newsState.selected] && (
+            motdsAllowed[newsState.selected] && (
               <NewsItem
-                key={
-                  contentPages.battleroyalenewsv2.news.motds[newsState.selected]
-                    ?.id
-                }
-                news={
-                  contentPages.battleroyalenewsv2.news.motds[newsState.selected]
-                }
+                key={motdsAllowed[newsState.selected]?.id}
+                news={motdsAllowed[newsState.selected]}
               />
             )}
         </AnimatePresence>
       </div>
       <div className="newsList">
-        {/* <button></button> */}
-        {contentPages?.battleroyalenewsv2?.news.motds.map((_, i) => (
+        {motdsAllowed.map((_, i) => (
           <button
             className={newsState.selected === i ? "on" : ""}
             onClick={() => newsState.set_selected(i)}

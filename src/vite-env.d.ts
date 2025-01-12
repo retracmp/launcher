@@ -295,6 +295,7 @@ type ContentPagesResult = {
         image: string;
         title: string;
         body: string;
+        hidden: bool;
       }>;
     };
   };
