@@ -4,46 +4,53 @@ import { queryContentPages } from "src/external/query";
 
 import "src/styles/news.css";
 import { AnimatePresence, motion } from "framer-motion";
+import { useNewsState } from "src/state/news";
 
 const News = () => {
+  const newsState = useNewsState();
+
   const { data: contentPages } = useQuery({
     queryKey: ["content-pages"],
     queryFn: queryContentPages,
   });
 
-  const [selected, setSelected] = useState(0);
-
   useEffect(() => {
     if (contentPages?.battleroyalenewsv2?.news.motds.length === 0) return;
     const interval = setInterval(() => {
-      setSelected(
-        (s) => (s + 1) % contentPages?.battleroyalenewsv2?.news.motds.length!
+      newsState.set_selected(
+        (newsState.selected + 1) %
+          contentPages?.battleroyalenewsv2?.news.motds.length!
       );
     }, 10000);
 
     return () => clearInterval(interval);
-  }, [selected, contentPages]);
+  }, [newsState.selected, contentPages]);
 
   return (
     <div className="outerOuter">
       <div className="newsContainer">
         <AnimatePresence>
-          {contentPages && contentPages.battleroyalenewsv2 && (
-            <NewsItem
-              key={contentPages.battleroyalenewsv2.news.motds[selected]?.id}
-              news={contentPages.battleroyalenewsv2.news.motds[selected]}
-            />
-          )}
+          {contentPages &&
+            contentPages.battleroyalenewsv2 &&
+            contentPages.battleroyalenewsv2.news.motds[newsState.selected] && (
+              <NewsItem
+                key={
+                  contentPages.battleroyalenewsv2.news.motds[newsState.selected]
+                    ?.id
+                }
+                news={
+                  contentPages.battleroyalenewsv2.news.motds[newsState.selected]
+                }
+              />
+            )}
         </AnimatePresence>
       </div>
       <div className="newsList">
         {/* <button></button> */}
         {contentPages?.battleroyalenewsv2?.news.motds.map((_, i) => (
           <button
-            className={selected === i ? "on" : ""}
-            onClick={() => {
-              setSelected(i);
-            }}
+            className={newsState.selected === i ? "on" : ""}
+            onClick={() => newsState.set_selected(i)}
           ></button>
         ))}
       </div>
