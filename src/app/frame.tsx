@@ -74,12 +74,12 @@ const Frame = () => {
     })();
   }, [libraryControl.entries]);
 
-  // useEffect(() => {
-  //   let t = setInterval(async () => {
-  //     libraryControl.setPakValid(await hasPakInstalled(false));
-  //   }, 1000);
-  //   return () => clearInterval(t);
-  // }, [libraryControl.entries]);
+  useEffect(() => {
+    let t = setInterval(async () => {
+      libraryControl.setPakValid(await hasPakInstalled(false));
+    }, 1000);
+    return () => clearInterval(t);
+  }, [libraryControl.entries]);
 
   const [version, setVersion] = useState("1.0.16");
   useEffect(() => {

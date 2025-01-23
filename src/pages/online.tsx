@@ -54,7 +54,7 @@ const Online = () => {
         </div>
       )}
 
-      {w <= 930 && w > 675 && (
+      {/* {w <= 930 && w > 675 && (
         <div className="snowOverview">
           <ExclusionNoti />
           <div className="duo">
@@ -68,9 +68,9 @@ const Online = () => {
             <ShopPreview />
           </div>
         </div>
-      )}
+      )} */}
 
-      {w <= 675 && (
+      {w <= 930 && (
         <div className="snowOverview">
           <ExclusionNoti />
           <Player />
@@ -90,7 +90,12 @@ const Online = () => {
             libraryControl.getCurrentEntry() != null && (
               <button
                 className="default custom"
-                onClick={DownloadCustomContent}
+                onClick={async () => {
+                  await DownloadCustomContent();
+                  await libraryControl.setPakValid(
+                    await hasPakInstalled(false)
+                  );
+                }}
                 disabled={is_downloading}
               >
                 Update Pak Files

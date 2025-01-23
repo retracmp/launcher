@@ -4,8 +4,12 @@ import { useUserControl } from "src/state/user";
 import { useConfigControl } from "src/state/config";
 import { useLibraryControl } from "src/state/library";
 import { motion } from "framer-motion";
-import { downloadFile, setshouldclosefortnite } from "src/lib/tauri";
-import { hasPakInstalled, importBuildFromDialog } from "src/lib/import";
+import { setshouldclosefortnite } from "src/lib/tauri";
+import {
+  DownloadCustomContent,
+  hasPakInstalled,
+  importBuildFromDialog,
+} from "src/lib/import";
 import { queryPerson } from "src/external/query";
 import { useQuery } from "@tanstack/react-query";
 import { message } from "@tauri-apps/api/dialog";
@@ -71,72 +75,57 @@ const Settings = () => {
   };
 
   const handleDownloadCustomContent = async () => {
-    if (libraryControl.getCurrentEntry() === null)
+    if (libraryControl.getCurrentEntry() === null) {
       return message("Please set the Fortnite directory first!", {
         title: "Retrac Error",
         type: "error",
       });
+    }
 
-    await downloadFile(
-      "https://cdn.0xkaede.xyz/data",
-      "pakchunk2003-WindowsClient_P.pak",
-      `${
-        libraryControl.getCurrentEntry()?.path
-      }\\FortniteGame\\Content\\Paks\\pakchunk2003-WindowsClient_P.pak`
-    );
-    await downloadFile(
-      "https://cdn.0xkaede.xyz/data",
-      "pakchunk2003-WindowsClient_P.sig",
-      `${
-        libraryControl.getCurrentEntry()?.path
-      }\\FortniteGame\\Content\\Paks\\pakchunk2003-WindowsClient_P.sig`
-    );
-    await downloadFile(
-      "https://cdn.0xkaede.xyz/data",
-      "pakchunk2004-WindowsClient_P.pak",
-      `${
-        libraryControl.getCurrentEntry()?.path
-      }\\FortniteGame\\Content\\Paks\\pakchunk2004-WindowsClient_P.pak`
-    );
-    await downloadFile(
-      "https://cdn.0xkaede.xyz/data",
-      "pakchunk2004-WindowsClient_P.sig",
-      `${
-        libraryControl.getCurrentEntry()?.path
-      }\\FortniteGame\\Content\\Paks\\pakchunk2004-WindowsClient_P.sig`
-    );
-    await downloadFile(
-      "https://cdn.0xkaede.xyz/data",
-      "pakchunk2004-WindowsClient_P.ucas",
-      `${
-        libraryControl.getCurrentEntry()?.path
-      }\\FortniteGame\\Content\\Paks\\pakchunk2004-WindowsClient_P.ucas`
-    );
-    await downloadFile(
-      "https://cdn.0xkaede.xyz/data",
-      "pakchunk2004-WindowsClient_P.utoc",
-      `${
-        libraryControl.getCurrentEntry()?.path
-      }\\FortniteGame\\Content\\Paks\\pakchunk2004-WindowsClient_P.utoc`
-    );
+    // await downloadFile(
+    //   "https://cdn.0xkaede.xyz/data",
+    //   "pakchunk2003-WindowsClient_P.pak",
+    //   `${
+    //     libraryControl.getCurrentEntry()?.path
+    //   }\\FortniteGame\\Content\\Paks\\pakchunk2003-WindowsClient_P.pak`
+    // );
+    // await downloadFile(
+    //   "https://cdn.0xkaede.xyz/data",
+    //   "pakchunk2003-WindowsClient_P.sig",
+    //   `${
+    //     libraryControl.getCurrentEntry()?.path
+    //   }\\FortniteGame\\Content\\Paks\\pakchunk2003-WindowsClient_P.sig`
+    // );
+    // await downloadFile(
+    //   "https://cdn.0xkaede.xyz/data",
+    //   "pakchunk2004-WindowsClient_P.pak",
+    //   `${
+    //     libraryControl.getCurrentEntry()?.path
+    //   }\\FortniteGame\\Content\\Paks\\pakchunk2004-WindowsClient_P.pak`
+    // );
+    // await downloadFile(
+    //   "https://cdn.0xkaede.xyz/data",
+    //   "pakchunk2004-WindowsClient_P.sig",
+    //   `${
+    //     libraryControl.getCurrentEntry()?.path
+    //   }\\FortniteGame\\Content\\Paks\\pakchunk2004-WindowsClient_P.sig`
+    // );
+    // await downloadFile(
+    //   "https://cdn.0xkaede.xyz/data",
+    //   "pakchunk2004-WindowsClient_P.ucas",
+    //   `${
+    //     libraryControl.getCurrentEntry()?.path
+    //   }\\FortniteGame\\Content\\Paks\\pakchunk2004-WindowsClient_P.ucas`
+    // );
+    // await downloadFile(
+    //   "https://cdn.0xkaede.xyz/data",
+    //   "pakchunk2004-WindowsClient_P.utoc",
+    //   `${
+    //     libraryControl.getCurrentEntry()?.path
+    //   }\\FortniteGame\\Content\\Paks\\pakchunk2004-WindowsClient_P.utoc`
+    // );
 
-    // if (configControl.bubble_builds) {
-    //   await downloadFile(
-    //     "https://cdn.0xkaede.xyz/data",
-    //     "pakchunkRetracBubble-WindowsClient_P.pak",
-    //     `${
-    //       libraryControl.getCurrentEntry()?.path
-    //     }\\FortniteGame\\Content\\Paks\\pakchunkRetracBubble-WindowsClient_P.pak`
-    //   );
-    //   await downloadFile(
-    //     "https://cdn.0xkaede.xyz/data",
-    //     "pakchunkRetracBubble-WindowsClient_P.sig",
-    //     `${
-    //       libraryControl.getCurrentEntry()?.path
-    //     }\\FortniteGame\\Content\\Paks\\pakchunkRetracBubble-WindowsClient_P.sig`
-    //   );
-    // }
-
+    await DownloadCustomContent();
     libraryControl.setPakValid(await hasPakInstalled(false));
   };
 

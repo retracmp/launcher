@@ -146,7 +146,7 @@ export const hasPakInstalled = async (isPlay: bool) => {
     okayFiles[pakName] = false;
   }
 
-  console.log("OKAY_FILES", okayFiles)
+  console.log("OKAY_FILES", okayFiles);
 
   for (const item in okayFiles) {
     if (pakSizes.data[item] === undefined) {
@@ -182,6 +182,10 @@ export const hasPakInstalled = async (isPlay: bool) => {
 
 export const DownloadCustomContent = async () => {
   const libraryControl = useLibraryControl.getState();
+  if (await hasPakInstalled(false)) {
+    return;
+  }
+
   // const config = useConfigControl.getState();
 
   if (libraryControl.getCurrentEntry() === null)
@@ -190,10 +194,14 @@ export const DownloadCustomContent = async () => {
       type: "error",
     });
 
-  const to_delete = [
+  let to_delete = [
     "pakchunk1001-WindowsClient.pak",
     "pakchunk1001-WindowsClient.sig",
   ];
+  const paksToDownload = await get_paks_to_download();
+  if (paksToDownload.ok) {
+    to_delete = [...to_delete, ...paksToDownload.data];
+  }
 
   for (const file of to_delete) {
     await deleteFile(
@@ -202,37 +210,6 @@ export const DownloadCustomContent = async () => {
       }\\FortniteGame\\Content\\Paks\\${file}`
     );
   }
-
-  // const to_download = {
-  //   "pakchunk2003-WindowsClient_P.pak": `${
-  //     libraryControl.getCurrentEntry()?.path
-  //   }\\FortniteGame\\Content\\Paks\\pakchunk2003-WindowsClient_P.pak`,
-  //   "pakchunk2003-WindowsClient_P.sig": `${
-  //     libraryControl.getCurrentEntry()?.path
-  //   }\\FortniteGame\\Content\\Paks\\pakchunk2003-WindowsClient_P.sig`,
-  //   "pakchunk2004-WindowsClient_P.pak": `${
-  //     libraryControl.getCurrentEntry()?.path
-  //   }\\FortniteGame\\Content\\Paks\\pakchunk2004-WindowsClient_P.pak`,
-  //   "pakchunk2004-WindowsClient_P.sig": `${
-  //     libraryControl.getCurrentEntry()?.path
-  //   }\\FortniteGame\\Content\\Paks\\pakchunk2004-WindowsClient_P.sig`,
-  //   "pakchunk2004-WindowsClient_P.ucas": `${
-  //     libraryControl.getCurrentEntry()?.path
-  //   }\\FortniteGame\\Content\\Paks\\pakchunk2004-WindowsClient_P.ucas`,
-  //   "pakchunk2004-WindowsClient_P.utoc": `${
-  //     libraryControl.getCurrentEntry()?.path
-  //   }\\FortniteGame\\Content\\Paks\\pakchunk2004-WindowsClient_P.utoc`,
-  // };
-
-  // for (const [url, path] of Object.entries(to_download)) {
-  //   await downloadFile("https://cdn.0xkaede.xyz/data", url, path).catch((e) => {
-  //     console.error(e);
-  //     message(
-  //       "An error occured while downloading " + url + ". Please try again.",
-  //       "Retrac Error"
-  //     );
-  //   });
-  // }
 
   const pakBasePath = `${
     libraryControl.getCurrentEntry()?.path

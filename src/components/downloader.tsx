@@ -27,6 +27,7 @@ const DownloaderArea = () => {
     });
 
   const onDownloadProgress = (progress: DownloadProgress_rust) => {
+    console.log("progress", progress);
     setDownloading(true);
     setDownloadProgress(progress);
   };
