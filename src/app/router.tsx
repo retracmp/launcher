@@ -16,6 +16,7 @@ import Online from "src/pages/online";
 import Servers from "src/pages/servers";
 import Leaderboards from "src/pages/leaderboards";
 import Onboard from "src/pages/onboard";
+import Downloads from "src/pages/downloads";
 
 export const rootRoute = createRootRoute({
   component: () => (
@@ -95,6 +96,12 @@ export const snowLeaderboardRoute = createRoute({
   component: Leaderboards,
 });
 
+export const snowDlRoute = createRoute({
+  getParentRoute: () => snowRoute,
+  path: "/dl",
+  component: Downloads,
+});
+
 const tree = rootRoute.addChildren([
   credentialsRoute,
   onboardRoute,
@@ -103,6 +110,7 @@ const tree = rootRoute.addChildren([
     snowPlayerRoute,
     snowServersRoute,
     snowLeaderboardRoute,
+    snowDlRoute,
   ]),
 ]);
 

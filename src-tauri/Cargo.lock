@@ -3569,7 +3569,7 @@ dependencies = [
 
 [[package]]
 name = "retraclauncher"
-version = "1.0.19"
+version = "1.0.20"
 dependencies = [
  "dll-injector",
  "embed-resource 1.8.0",

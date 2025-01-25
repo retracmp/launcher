@@ -60,6 +60,9 @@ const Drawer = () => {
       <Link className="item" to="/snow/stats">
         LEADERBOARDS
       </Link>
+      <Link className="item" to="/snow/dl">
+        DOWNLOADS
+      </Link>
       <s></s>
       {config.show_defender_popup && (
         <button className="item download" onClick={exclude_retrac}>
@@ -78,7 +81,7 @@ const Drawer = () => {
             </button>
           )) || (
           <button
-            onClick={() => open("https://donations.retrac.site")}
+            onClick={() => open("https://retracdonations.mysellix.io/")}
             className="item donate"
           >
             DONATE
