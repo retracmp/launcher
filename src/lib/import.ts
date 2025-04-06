@@ -110,11 +110,11 @@ export const hasPakInstalled = async (isPlay: bool) => {
   const pakSizes = await client.sizes();
   console.log(pakSizes);
   if (!pakSizes.ok) {
-    if (isPlay)
-      message(
-        "Could not contact the file server, some of the cosmetics may not be up to date.",
-        "Retrac Custom Data"
-      );
+    // if (isPlay)
+    //   message(
+    //     "Could not contact the file server, some of the cosmetics may not be up to date.",
+    //     "Retrac Custom Data"
+    //   );
     return true;
   }
 
@@ -129,10 +129,10 @@ export const hasPakInstalled = async (isPlay: bool) => {
 
   const paksToDownload = await get_paks_to_download();
   if (!paksToDownload.ok) {
-    message(
-      "Launching without custom cosmetics as the pak file is not on the file server. Some of the cosmetics may not be up to date.",
-      "Retrac Custom Data"
-    );
+    // message(
+    //   "Launching without custom cosmetics as the pak file is not on the file server. Some of the cosmetics may not be up to date.",
+    //   "Retrac Custom Data"
+    // );
     return true;
   }
 
@@ -145,11 +145,11 @@ export const hasPakInstalled = async (isPlay: bool) => {
   for (const item in okayFiles) {
     if (pakSizes.data[item] === undefined) {
       if (isPlay)
-        message(
-          "Launching without custom cosmetics as the pak file is not on the file server. Some of the cosmetics may not be up to date.",
-          "Retrac Custom Data"
-        );
-      return true;
+        // message(
+        //   "Launching without custom cosmetics as the pak file is not on the file server. Some of the cosmetics may not be up to date.",
+        //   "Retrac Custom Data"
+        // );
+        return true;
       continue;
     }
 

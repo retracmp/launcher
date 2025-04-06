@@ -27,6 +27,7 @@ const CredentialsPage = () => {
 
     queryClient.setQueryData(["player"], player.data);
     userControl.new_token(token);
+    userControl.save_user_id(player.data.ID);
     window.location.hash = "";
 
     if (code.includes("onboard")) {

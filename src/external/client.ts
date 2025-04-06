@@ -15,7 +15,8 @@ import {
 import { useConfigControl } from "src/state/config";
 
 const localAxiosClient = axios.create({
-  baseURL: "http://127.0.0.1:3000",
+  // baseURL: "http://127.0.0.1:3000",
+  baseURL: "https://retrac.site",
 });
 
 const finalAxiosClient = axios.create({

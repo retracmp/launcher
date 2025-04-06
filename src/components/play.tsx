@@ -43,7 +43,7 @@ const PlaySnow = () => {
   // remove . and turn int oa 3 digit number
   const launcherNum = parseInt(launcher?.current_version.split(".")[2] || "0");
 
-  const [version, setVersion] = useState("1.0.20");
+  const [version, setVersion] = useState("1.0.21");
   useEffect(() => {
     (async () => {
       const v = await getVersion();
